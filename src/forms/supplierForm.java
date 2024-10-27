@@ -177,7 +177,7 @@ public class supplierForm extends javax.swing.JFrame {
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         String suppName = JOptionPane.showInputDialog(null, "Input supplier name");
         if (suppName != null) {
-            core.insertSuppName(suppName.trim());
+            core.insertSuppName(suppName.trim(), core.getAccountID());
         }
     }//GEN-LAST:event_jLabel2MouseClicked
 
@@ -215,7 +215,10 @@ public class supplierForm extends javax.swing.JFrame {
             int row = suppTable.getSelectedRow();
             String suppName = suppTable.getValueAt(row, col).toString();
 
-            core.deleteSupplier(suppName, null);
+            int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this supplier?", "Warning", 0);
+            if (option == 0) {
+                core.deleteSupplier(suppName, null);
+            }
         } catch (NullPointerException npe) {
             JOptionPane.showMessageDialog(null, "Please select a supplier to delete.");
         } catch (Exception e) {
@@ -277,7 +280,7 @@ public class supplierForm extends javax.swing.JFrame {
             String query = "SELECT supplierName AS `Supplier Name` "
                     + "FROM supplier "
                     + "WHERE deletedOn IS NULL "
-                    + "supplier LIMIT " + initial + ", " + max + "";
+                    + "LIMIT " + initial + ", " + max + "";
             if (suppName != null && (!suppName.isBlank() || !suppName.isEmpty())) {
                 query = "SELECT supplierName AS `Supplier Name` "
                         + "FROM supplier "
