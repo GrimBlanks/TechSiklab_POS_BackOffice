@@ -60,8 +60,7 @@ public class coreClass {
                     + "ON ah.accountID = ad.accountID "
                     + "WHERE ah.deletedOn IS NULL "
                     + "AND userName = '" + username + "' AND password = SHA2('" + password + "', 256) ";
-            dbCore.setQuery(query);
-            rs = dbCore.getResultSet();
+            rs = dbCore.getResultSet(query);
             if (rs.next()) {
                 res = true;
                 setAccountID(rs.getString("accountID"));
@@ -134,8 +133,7 @@ public class coreClass {
                     + "FROM itemcategory "
                     + "WHERE description = '" + categoryName + "' "
                     + "AND deletedOn IS NULL ";
-            dbCore.setQuery(query);
-            rs = dbCore.getResultSet();
+            rs = dbCore.getResultSet(query);
             if (rs.next()) {
                 res = true;
             }
@@ -156,8 +154,7 @@ public class coreClass {
                     + "FROM supplier "
                     + "WHERE supplierName = '" + supplierName + "' "
                     + "AND deletedOn IS NULL ";
-            dbCore.setQuery(query);
-            rs = dbCore.getResultSet();
+            rs = dbCore.getResultSet(query);
             if (rs.next()) {
                 res = true;
             }

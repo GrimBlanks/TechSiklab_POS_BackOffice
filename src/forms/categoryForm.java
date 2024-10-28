@@ -302,8 +302,7 @@ public class categoryForm extends javax.swing.JFrame {
                         + "AND deletedOn IS NULL "
                         + "LIMIT " + initial + ", " + max + "";
             }
-            dbCore.setQuery(query);
-            rs = dbCore.getResultSet();
+            rs = dbCore.getResultSet(query);
             suppTable.setModel(DbUtils.resultSetToTableModel(rs));
         } catch (Exception e) {
             logs.logger.log(Level.SEVERE, "An exception occurred", e);
@@ -317,8 +316,7 @@ public class categoryForm extends javax.swing.JFrame {
         try {
             logs.setupLogger();
             String query = "SELECT COUNT(*) AS `Counts` FROM itemcategory WHERE deletedOn IS NULL";
-            dbCore.setQuery(query);
-            rs = dbCore.getResultSet();
+            rs = dbCore.getResultSet(query);
             if (rs.next()) {
                 count = Integer.parseInt(rs.getString("Counts"));
             }

@@ -1,9 +1,16 @@
 package forms;
 
+import classes.databaseCore;
+import classes.logging;
+import java.util.logging.Level;
+import java.sql.*;
+
 public class addItemForm extends javax.swing.JFrame {
 
     public static String compHide = "";
     public static Boolean itemUOM = false;
+    logging logs = new logging();
+    databaseCore dbCore = new databaseCore();
 
     public addItemForm() {
         initComponents();
@@ -63,6 +70,13 @@ public class addItemForm extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
         setResizable(false);
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(183, 232, 236));
         jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
@@ -455,6 +469,10 @@ public class addItemForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_saveBtnActionPerformed
 
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        getSuppCatList();
+    }//GEN-LAST:event_formWindowGainedFocus
+
     /**
      * @param args the command line arguments
      */
@@ -574,5 +592,52 @@ public class addItemForm extends javax.swing.JFrame {
         allowPWD.setSelected(false);
         allowSenior.setSelected(false);
         enableUOM.setSelected(false);
+    }
+
+    private void getSupplierList() {
+        try {
+            ResultSet rs;
+            logs.setupLogger();
+            String query = "SELECT supplierName "
+                    + "FROM supplier "
+                    + "WHERE deletedOn IS NULL ";
+            rs = dbCore.getResultSet(query);
+            suppList.removeAllItems();
+            suppList.addItem("");
+            while (rs.next()) {
+                suppList.addItem(rs.getString("supplierName"));
+            }
+            suppList.updateUI();
+        } catch (Exception e) {
+            logs.logger.log(Level.SEVERE, "An exception occurred", e);
+        } finally {
+            logs.closeLogger();
+        }
+    }
+
+    private void getCategoryList() {
+        try {
+            ResultSet rs;
+            logs.setupLogger();
+            String query = "SELECT description "
+                    + "FROM itemcategory "
+                    + "WHERE deletedOn IS NULL ";
+            rs = dbCore.getResultSet(query);
+            categoryList.removeAllItems();
+            categoryList.addItem("");
+            while (rs.next()) {
+                categoryList.addItem(rs.getString("description"));
+            }
+            categoryList.updateUI();
+        } catch (Exception e) {
+            logs.logger.log(Level.SEVERE, "An exception occurred", e);
+        } finally {
+            logs.closeLogger();
+        }
+    }
+
+    private void getSuppCatList() {
+        getSupplierList();
+        getCategoryList();
     }
 }
