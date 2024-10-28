@@ -46,6 +46,13 @@ public class supplierForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
 
         jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
@@ -217,14 +224,22 @@ public class supplierForm extends javax.swing.JFrame {
 
             int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this supplier?", "Warning", 0);
             if (option == 0) {
-                core.deleteSupplier(suppName, null);
+                core.deleteSupplier(suppName, core.getAccountID());
             }
+        } catch (ArrayIndexOutOfBoundsException ai) {
+            JOptionPane.showMessageDialog(null, "Please select a supplier to delete.", "Warning", 1);
         } catch (NullPointerException npe) {
-            JOptionPane.showMessageDialog(null, "Please select a supplier to delete.");
+            JOptionPane.showMessageDialog(null, "Please select a supplier to delete.", "Warning", 1);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        showSuppliers(searchBar.getText(), initialNum, maxNum);
     }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        showSuppliers(searchBar.getText(), initialNum, maxNum);
+    }//GEN-LAST:event_formWindowGainedFocus
 
     /**
      * @param args the command line arguments

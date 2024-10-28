@@ -1,11 +1,28 @@
-
 package forms;
+
+import classes.coreClass;
+import classes.databaseCore;
+import classes.logging;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import javax.swing.JOptionPane;
+import net.proteanit.sql.DbUtils;
 
 public class categoryForm extends javax.swing.JFrame {
 
- 
+    ResultSet rs;
+    coreClass core = new coreClass();
+    logging logs = new logging();
+    databaseCore dbCore = new databaseCore();
+    private int initialNum = 0;
+    private int maxNum = 40;
+    private final int addedNum = 40;
+
     public categoryForm() {
         initComponents();
+        showCategories(searchBar.getText(), initialNum, maxNum);
     }
 
     /**
@@ -17,23 +34,212 @@ public class categoryForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        searchBar = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        suppTable = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
+
+        jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setText("Search");
+
+        searchBar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchBarKeyReleased(evt);
+            }
+        });
+
+        suppTable.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        suppTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        suppTable.setRowHeight(40);
+        suppTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                suppTableMouseReleased(evt);
+            }
+        });
+        suppTable.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                suppTableKeyReleased(evt);
+            }
+        });
+        jScrollPane1.setViewportView(suppTable);
+
+        jButton1.setText("PREV");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("NEXT");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add supplier.png"))); // NOI18N
+        jLabel2.setText("Add Category");
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete supplier.png"))); // NOI18N
+        jLabel3.setText("Delete Category");
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(searchBar)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jButton1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel3)))))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 483, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 481, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void searchBarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchBarKeyReleased
+        showCategories(searchBar.getText(), initialNum, maxNum);
+    }//GEN-LAST:event_searchBarKeyReleased
+
+    private void suppTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_suppTableMouseReleased
+        suppTable.removeEditor();
+    }//GEN-LAST:event_suppTableMouseReleased
+
+    private void suppTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_suppTableKeyReleased
+        suppTable.removeEditor();
+    }//GEN-LAST:event_suppTableKeyReleased
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (maxNum > 40) {
+            initialNum -= addedNum;
+            maxNum -= addedNum;
+            showCategories(searchBar.getText(), initialNum, maxNum);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (getCategoryCount() > 40) {
+            initialNum += addedNum;
+            maxNum += addedNum;
+            showCategories(searchBar.getText(), initialNum, maxNum);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        String catName = JOptionPane.showInputDialog(null, "Input category name");
+        if (catName != null) {
+            core.insertCategory(catName.trim(), core.getAccountID());
+        }
+    }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        try {
+            int col = 0;
+            int row = suppTable.getSelectedRow();
+            String categoryName = suppTable.getValueAt(row, col).toString();
+
+            int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this category?", "Warning", 0);
+            if (option == 0) {
+                core.deleteCategory(categoryName, core.getAccountID());
+            }
+        } catch (ArrayIndexOutOfBoundsException ai) {
+            JOptionPane.showMessageDialog(null, "Please select a category to delete.", "Warning", 1);
+        } catch (NullPointerException npe) {
+            JOptionPane.showMessageDialog(null, "Please select a category to delete.", "Warning", 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        showCategories(searchBar.getText(), initialNum, maxNum);
+    }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        showCategories(searchBar.getText(), initialNum, maxNum);
+    }//GEN-LAST:event_formWindowGainedFocus
 
     /**
      * @param args the command line arguments
@@ -71,5 +277,58 @@ public class categoryForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField searchBar;
+    private javax.swing.JTable suppTable;
     // End of variables declaration//GEN-END:variables
+
+    private void showCategories(String catName, int initial, int max) {
+        try {
+            logs.setupLogger();
+            String query = "SELECT description AS `Category Name` "
+                    + "FROM itemcategory "
+                    + "WHERE deletedOn IS NULL "
+                    + "LIMIT " + initial + ", " + max + "";
+            if (catName != null && (!catName.isBlank() || !catName.isEmpty())) {
+                query = "SELECT description AS `Category Name` "
+                        + "FROM itemcategory "
+                        + "WHERE description REGEXP '" + catName + "' "
+                        + "AND deletedOn IS NULL "
+                        + "LIMIT " + initial + ", " + max + "";
+            }
+            dbCore.setQuery(query);
+            rs = dbCore.getResultSet();
+            suppTable.setModel(DbUtils.resultSetToTableModel(rs));
+        } catch (Exception e) {
+            logs.logger.log(Level.SEVERE, "An exception occurred", e);
+        } finally {
+            logs.closeLogger();
+        }
+    }
+
+    private int getCategoryCount() {
+        int count = 0;
+        try {
+            logs.setupLogger();
+            String query = "SELECT COUNT(*) AS `Counts` FROM itemcategory WHERE deletedOn IS NULL";
+            dbCore.setQuery(query);
+            rs = dbCore.getResultSet();
+            if (rs.next()) {
+                count = Integer.parseInt(rs.getString("Counts"));
+            }
+            rs.close();
+            dbCore.closeConnection();
+        } catch (IOException | SQLException e) {
+            logs.logger.log(Level.SEVERE, "An exception occurred", e);
+        } finally {
+            logs.closeLogger();
+        }
+        return count;
+    }
 }

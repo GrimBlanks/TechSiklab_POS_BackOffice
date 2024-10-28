@@ -1,9 +1,12 @@
 package forms;
 
+import classes.coreClass;
 import javax.swing.JOptionPane;
 
 public class mainForm extends javax.swing.JFrame {
 
+    coreClass core = new coreClass();
+    
     public mainForm() {
         initComponents();
     }
@@ -266,6 +269,11 @@ public class mainForm extends javax.swing.JFrame {
 
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem2.setText("Add Supplier");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem2);
 
         jMenuBar1.add(jMenu2);
@@ -291,6 +299,7 @@ public class mainForm extends javax.swing.JFrame {
         int option = JOptionPane.showConfirmDialog(null, "Do you want to logout?", "Warning", 0);
         if (option == 0) {
             new loginForm().setVisible(true);
+            core.setAccountID("");
             dispose();
         }
     }//GEN-LAST:event_formWindowClosing
@@ -321,6 +330,10 @@ public class mainForm extends javax.swing.JFrame {
         addItemForm.compHide = "Add";
         new addItemForm().setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        new supplierForm().setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
      * @param args the command line arguments
