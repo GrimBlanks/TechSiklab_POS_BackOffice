@@ -1,20 +1,29 @@
 package forms;
 
+import classes.coreClass;
 import classes.databaseCore;
 import classes.logging;
 import java.util.logging.Level;
 import java.sql.*;
+import javax.swing.JOptionPane;
 
 public class addItemForm extends javax.swing.JFrame {
 
     public static String compHide = "";
-    public static Boolean itemUOM = false;
+    public static boolean itemUOM = false;
+    private static String itemIDText = "";
+    private static boolean isEdit = false;
     logging logs = new logging();
     databaseCore dbCore = new databaseCore();
+    coreClass core = new coreClass();
 
     public addItemForm() {
         initComponents();
         initialBehavior();
+
+        if (!isEdit && (!itemIDText.isBlank() || !itemIDText.isEmpty())) {
+            getAllItemDetails(itemIDText.trim());
+        }
     }
 
     /**
@@ -433,10 +442,51 @@ public class addItemForm extends javax.swing.JFrame {
 
     private void closeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtnActionPerformed
         dispose();
+        itemIDText = "";
     }//GEN-LAST:event_closeBtnActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
-        // TODO add your handling code here:
+        try {
+            String itemIDs = itemID.getText().trim();
+            String itemBar = itemBarcode.getText().trim();
+            String itemDescription = itemDesc.getText().trim();
+            double initialPrice = Double.parseDouble(unitPrice.getText().trim());
+            double sellPrice = Double.parseDouble(sellingPrice.getText().trim());
+            int pwd = 0;
+            int scd = 0;
+            String color = itemColor.getText();
+            String itemSize = itemSizeChar.getText();
+            int itemSizeValue = (int) itemSizeVal.getValue();
+            int suppID = 0;
+            int catID = 0;
+            String UOMDesc = UOMText.getText().toUpperCase();
+
+            if (categoryList.getSelectedIndex() == 0) {
+                JOptionPane.showMessageDialog(null, "Please select a category", "Warning", 1);
+            } else {
+                catID = getCategoryID(categoryList.getSelectedItem().toString());
+            }
+
+            if (suppList.getSelectedIndex() == 0) {
+                JOptionPane.showMessageDialog(null, "Please select a supplier", "Warning", 1);
+            } else {
+                suppID = getSuppID(suppList.getSelectedItem().toString());
+            }
+
+            if (allowPWD.isSelected()) {
+                pwd = 1;
+            }
+
+            if (allowSenior.isSelected()) {
+                scd = 1;
+            }
+
+            core.addItem(itemIDs, itemDescription, suppID, core.getAccountID(), initialPrice,
+                    catID, pwd, scd, sellPrice, itemBar, color, itemSize, itemSizeValue, UOMDesc);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
@@ -592,6 +642,8 @@ public class addItemForm extends javax.swing.JFrame {
         allowPWD.setSelected(false);
         allowSenior.setSelected(false);
         enableUOM.setSelected(false);
+        suppList.setSelectedIndex(0);
+        categoryList.setSelectedIndex(0);
     }
 
     private void getSupplierList() {
@@ -639,5 +691,84 @@ public class addItemForm extends javax.swing.JFrame {
     private void getSuppCatList() {
         getSupplierList();
         getCategoryList();
+    }
+
+    public void setItemID(String itemID) {
+        itemIDText = itemID;
+    }
+
+    private void getAllItemDetails(String itemID) {
+
+    }
+
+    private String getItemDesc(String itemID) {
+        String itemDesc = "";
+
+        try {
+            ResultSet rs;
+            logs.setupLogger();
+            String query = "SELECT description "
+                    + "FROM itemcategory "
+                    + "WHERE deletedOn IS NULL ";
+            rs = dbCore.getResultSet(query);
+            categoryList.removeAllItems();
+            categoryList.addItem("");
+            while (rs.next()) {
+                categoryList.addItem(rs.getString("description"));
+            }
+            categoryList.updateUI();
+        } catch (Exception e) {
+            logs.logger.log(Level.SEVERE, "An exception occurred", e);
+        } finally {
+            logs.closeLogger();
+        }
+
+        return itemDesc;
+    }
+
+    private int getCategoryID(String description) {
+        int catID = 0;
+
+        try {
+            ResultSet rs;
+            logs.setupLogger();
+            String query = "SELECT * "
+                    + "FROM itemcategory "
+                    + "WHERE description = '" + description + "' "
+                    + "AND deletedOn IS NULL";
+            rs = dbCore.getResultSet(query);
+            if (rs.next()) {
+                catID = Integer.parseInt(rs.getString("categoryID"));
+            }
+        } catch (Exception e) {
+            logs.logger.log(Level.SEVERE, "An exception occurred", e);
+        } finally {
+            logs.closeLogger();
+        }
+
+        return catID;
+    }
+
+    private int getSuppID(String description) {
+        int suppID = 0;
+
+        try {
+            ResultSet rs;
+            logs.setupLogger();
+            String query = "SELECT supplierID "
+                    + "FROM supplier "
+                    + "WHERE supplierName = '" + description + "' "
+                    + "AND deletedOn IS NULL";
+            rs = dbCore.getResultSet(query);
+            if (rs.next()) {
+                suppID = Integer.parseInt(rs.getString("supplierID"));
+            }
+        } catch (Exception e) {
+            logs.logger.log(Level.SEVERE, "An exception occurred", e);
+        } finally {
+            logs.closeLogger();
+        }
+
+        return suppID;
     }
 }

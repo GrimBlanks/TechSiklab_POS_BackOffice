@@ -1,11 +1,14 @@
 package forms;
 
 import classes.coreClass;
+import classes.databaseCore;
 import javax.swing.JOptionPane;
+import net.proteanit.sql.DbUtils;
 
 public class mainForm extends javax.swing.JFrame {
 
     coreClass core = new coreClass();
+    databaseCore dbCore = new databaseCore();
     
     public mainForm() {
         initComponents();
@@ -15,7 +18,7 @@ public class mainForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        tabPane = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
@@ -45,12 +48,12 @@ public class mainForm extends javax.swing.JFrame {
             }
         });
 
-        jTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
-        jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.LEFT);
-        jTabbedPane1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
+        tabPane.setBackground(new java.awt.Color(255, 255, 255));
+        tabPane.setTabPlacement(javax.swing.JTabbedPane.LEFT);
+        tabPane.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        tabPane.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jTabbedPane1StateChanged(evt);
+                tabPaneStateChanged(evt);
             }
         });
 
@@ -198,7 +201,7 @@ public class mainForm extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Item Manager", jPanel1);
+        tabPane.addTab("Item Manager", jPanel1);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -211,7 +214,7 @@ public class mainForm extends javax.swing.JFrame {
             .addGap(0, 697, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("Price History", jPanel2);
+        tabPane.addTab("Price History", jPanel2);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -224,7 +227,7 @@ public class mainForm extends javax.swing.JFrame {
             .addGap(0, 697, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("Discount Manager", jPanel3);
+        tabPane.addTab("Discount Manager", jPanel3);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -237,7 +240,7 @@ public class mainForm extends javax.swing.JFrame {
             .addGap(0, 697, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("Promotion Manager", jPanel4);
+        tabPane.addTab("Promotion Manager", jPanel4);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -250,7 +253,7 @@ public class mainForm extends javax.swing.JFrame {
             .addGap(0, 697, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("Profile Manager", jPanel6);
+        tabPane.addTab("Profile Manager", jPanel6);
 
         jMenu1.setText("Item");
 
@@ -284,11 +287,11 @@ public class mainForm extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(tabPane, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(tabPane)
         );
 
         pack();
@@ -304,9 +307,20 @@ public class mainForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_formWindowClosing
 
-    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
-        System.out.println("iana");
-    }//GEN-LAST:event_jTabbedPane1StateChanged
+    private void tabPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabPaneStateChanged
+        if(tabPane.getSelectedIndex() == 0){
+            try{
+                String query = "SELECT ItemID AS `Item ID`, itemDescription AS `Item Description`, s.supplierName AS `Supplier`"
+                        + "FROM itemheader ih "
+                        + "JOIN supplier s "
+                        + "ON ih.supplierID = s.supplierID "
+                        + "WHERE ih.deletedOn IS NULL";
+                itemTable.setModel(DbUtils.resultSetToTableModel(dbCore.getResultSet(query)));
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_tabPaneStateChanged
 
     private void itemTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_itemTableKeyReleased
         itemTable.removeEditor();
@@ -391,8 +405,8 @@ public class mainForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTabbedPane tabPane;
     // End of variables declaration//GEN-END:variables
 
 }

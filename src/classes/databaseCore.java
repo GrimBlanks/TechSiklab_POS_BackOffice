@@ -1,15 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package classes;
 
 import java.sql.*;
 
-/**
- *
- * @author MIS
- */
 public class databaseCore {
 
     Connection con;
@@ -54,6 +46,13 @@ public class databaseCore {
             connect();
             st.execute(query);
         } catch (SQLException e) {
+            try {
+                if (con != null) {
+                    con.rollback();
+                }
+            } catch (SQLException rollbackEx) {
+                logs.logger.log(java.util.logging.Level.SEVERE, "An exception occurred", rollbackEx);
+            }
             logs.logger.log(java.util.logging.Level.SEVERE, "An exception occurred", e);
         } finally {
             logs.closeLogger();
@@ -65,6 +64,13 @@ public class databaseCore {
             connect();
             st.executeUpdate(query);
         } catch (SQLException e) {
+            try {
+                if (con != null) {
+                    con.rollback();
+                }
+            } catch (SQLException rollbackEx) {
+                logs.logger.log(java.util.logging.Level.SEVERE, "An exception occurred", rollbackEx);
+            }
             logs.logger.log(java.util.logging.Level.SEVERE, "An exception occurred", e);
         } finally {
             logs.closeLogger();

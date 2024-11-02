@@ -82,9 +82,41 @@ public class coreClass {
         return this.accountID;
     }
 
-    public void addItem(String itemID, String itemDescription, int supplierID, String accountID, double unitPrice, int categoryID, int PWDAllowed, int SeniorAllowed,
-            double sellingPrice, String barcode, String color, String initialSize, int value) {
-
+    public void addItem(String itemID,
+            String itemDescription,
+            int supplierID,
+            String accountID,
+            double unitPrice,
+            int categoryID,
+            int PWDAllowed,
+            int SeniorAllowed,
+            double sellingPrice,
+            String barcode,
+            String color,
+            String initialSize,
+            int value,
+            String UOMText) {
+        try {
+            logs.setupLogger();
+            if (!accountID.isBlank() || !accountID.isEmpty()) {
+                String query = "INSERT INTO itemheader(itemID, itemDescription, supplierID, addedOn, addedBy) "
+                        + "VALUES('" + itemID + "', '" + itemDescription + "', " + supplierID + ", NOW(), '" + accountID + "'); ";
+                dbCore.execute(query);
+                query = "INSERT INTO itemdetail(itemID, unitPrice, categoryID, description, discountPWDAllowed, discountSCAllowed, unitOfMeasure) "
+                        + "VALUES('" + itemID + "', " + unitPrice + ", " + categoryID + ", '" + itemDescription + "', '" + PWDAllowed + "', '" + SeniorAllowed + "', '" + UOMText + "'); ";
+                dbCore.execute(query);
+                query = "INSERT INTO itembarcode(itemID, barcode, addedOn, addedBy) VALUES('" + itemID + "', '" + barcode + "', NOW(), '" + accountID + "'); ";
+                dbCore.execute(query);
+                query = "INSERT INTO itemsubdetail(barcode, color, sizeInitial, sizeValue) VALUES('" + barcode + "', '" + color + "', '" + initialSize + "', '" + value + "');";
+                dbCore.execute(query);
+            } else {
+                JOptionPane.showMessageDialog(null, "Please login before adding an item.", "Warning", 1);
+            }
+        } catch (Exception e) {
+            logging.logger.log(Level.SEVERE, "An exception occurred", e);
+        } finally {
+            logs.closeLogger();
+        }
     }
 
     public void deleteCategory(String categoryName, String accountID) {
