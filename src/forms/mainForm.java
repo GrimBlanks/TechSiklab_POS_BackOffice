@@ -9,7 +9,7 @@ public class mainForm extends javax.swing.JFrame {
 
     coreClass core = new coreClass();
     databaseCore dbCore = new databaseCore();
-    
+
     public mainForm() {
         initComponents();
     }
@@ -68,6 +68,11 @@ public class mainForm extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Delete");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(8, 175, 92));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -308,18 +313,7 @@ public class mainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void tabPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabPaneStateChanged
-        if(tabPane.getSelectedIndex() == 0){
-            try{
-                String query = "SELECT ItemID AS `Item ID`, itemDescription AS `Item Description`, s.supplierName AS `Supplier`"
-                        + "FROM itemheader ih "
-                        + "JOIN supplier s "
-                        + "ON ih.supplierID = s.supplierID "
-                        + "WHERE ih.deletedOn IS NULL";
-                itemTable.setModel(DbUtils.resultSetToTableModel(dbCore.getResultSet(query)));
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-        }
+        showItems();
     }//GEN-LAST:event_tabPaneStateChanged
 
     private void itemTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_itemTableKeyReleased
@@ -336,8 +330,18 @@ public class mainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        addItemForm.compHide = "Edit";
-        new addItemForm().setVisible(true);
+        try {
+            int col = 0;
+            int row = itemTable.getSelectedRow();
+            String val = itemTable.getValueAt(row, col).toString();
+            addItemForm.itemIDText = val;
+            addItemForm.compHide = "Edit";
+            new addItemForm().setVisible(true);
+        } catch (ArrayIndexOutOfBoundsException ai) {
+            JOptionPane.showMessageDialog(null, "Please select an item to view details.", "Warning", 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -348,6 +352,23 @@ public class mainForm extends javax.swing.JFrame {
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         new supplierForm().setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            int option = JOptionPane.showConfirmDialog(null, "Delete selected item?", "Warning", 0);
+            if (option == 0) {
+                int col = 0;
+                int row = itemTable.getSelectedRow();
+                String val = itemTable.getValueAt(row, col).toString();
+                core.deleteItem(val, core.getAccountID());
+            }
+            showItems();
+        } catch (ArrayIndexOutOfBoundsException ai) {
+            JOptionPane.showMessageDialog(null, "Please select an item to view details.", "Warning", 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -408,5 +429,20 @@ public class mainForm extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTabbedPane tabPane;
     // End of variables declaration//GEN-END:variables
+
+    private void showItems() {
+        if (tabPane.getSelectedIndex() == 0) {
+            try {
+                String query = "SELECT ItemID AS `Item ID`, itemDescription AS `Item Description`, s.supplierName AS `Supplier`"
+                        + "FROM itemheader ih "
+                        + "JOIN supplier s "
+                        + "ON ih.supplierID = s.supplierID "
+                        + "WHERE ih.deletedOn IS NULL AND ih.deletedBy ISNULL ";
+                itemTable.setModel(DbUtils.resultSetToTableModel(dbCore.getResultSet(query)));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }

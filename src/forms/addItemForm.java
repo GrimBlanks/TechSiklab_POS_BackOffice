@@ -11,8 +11,7 @@ public class addItemForm extends javax.swing.JFrame {
 
     public static String compHide = "";
     public static boolean itemUOM = false;
-    private static String itemIDText = "";
-    private static boolean isEdit = false;
+    public static String itemIDText = "";
     logging logs = new logging();
     databaseCore dbCore = new databaseCore();
     coreClass core = new coreClass();
@@ -20,10 +19,6 @@ public class addItemForm extends javax.swing.JFrame {
     public addItemForm() {
         initComponents();
         initialBehavior();
-
-        if (!isEdit && (!itemIDText.isBlank() || !itemIDText.isEmpty())) {
-            getAllItemDetails(itemIDText.trim());
-        }
     }
 
     /**
@@ -65,16 +60,11 @@ public class addItemForm extends javax.swing.JFrame {
         sellingPrice = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
-        jLabel18 = new javax.swing.JLabel();
-        itemColor = new javax.swing.JTextField();
-        itemSizeChar = new javax.swing.JTextField();
-        jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
         addBtn = new javax.swing.JButton();
         closeBtn = new javax.swing.JButton();
         saveBtn = new javax.swing.JButton();
         clearBtn = new javax.swing.JButton();
-        itemSizeVal = new javax.swing.JSpinner();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -269,19 +259,6 @@ public class addItemForm extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel13.setText("Additional Information");
 
-        jLabel18.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel18.setText("Color");
-
-        itemColor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
-        itemSizeChar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
-        jLabel19.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel19.setText("<html>Size <i>(Initial Only)</i></html>");
-
-        jLabel20.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel20.setText("Size Value");
-
         addBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         addBtn.setText("ADD ITEM");
         addBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -314,11 +291,7 @@ public class addItemForm extends javax.swing.JFrame {
             }
         });
 
-        itemSizeVal.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                itemSizeValStateChanged(evt);
-            }
-        });
+        jButton1.setText("See Barcodes");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -330,25 +303,11 @@ public class addItemForm extends javax.swing.JFrame {
                     .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(itemBarcode)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(sellingPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, Short.MAX_VALUE)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(itemColor, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(itemSizeChar, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(itemSizeVal))
+                    .addComponent(sellingPrice, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(91, 91, 91)
-                                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -356,8 +315,9 @@ public class addItemForm extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(clearBtn)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(closeBtn)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(closeBtn))
+                            .addComponent(jButton1))
+                        .addGap(0, 30, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -370,26 +330,13 @@ public class addItemForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(itemBarcode, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(sellingPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addGap(36, 36, 36)
-                            .addComponent(itemColor, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(itemBarcode, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(itemSizeChar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(itemSizeVal, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(sellingPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -409,7 +356,7 @@ public class addItemForm extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -454,9 +401,6 @@ public class addItemForm extends javax.swing.JFrame {
             double sellPrice = Double.parseDouble(sellingPrice.getText().trim());
             int pwd = 0;
             int scd = 0;
-            String color = itemColor.getText();
-            String itemSize = itemSizeChar.getText();
-            int itemSizeValue = (int) itemSizeVal.getValue();
             int suppID = 0;
             int catID = 0;
             String UOMDesc = UOMText.getText().toUpperCase();
@@ -482,7 +426,7 @@ public class addItemForm extends javax.swing.JFrame {
             }
 
             core.addItem(itemIDs, itemDescription, suppID, core.getAccountID(), initialPrice,
-                    catID, pwd, scd, sellPrice, itemBar, color, itemSize, itemSizeValue, UOMDesc);
+                    catID, pwd, scd, sellPrice, itemBar, UOMDesc);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -491,13 +435,8 @@ public class addItemForm extends javax.swing.JFrame {
 
     private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
         clearText();
+        itemIDText = "";
     }//GEN-LAST:event_clearBtnActionPerformed
-
-    private void itemSizeValStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_itemSizeValStateChanged
-        if (Integer.parseInt(itemSizeVal.getValue().toString()) < 0) {
-            itemSizeVal.setValue(0);
-        }
-    }//GEN-LAST:event_itemSizeValStateChanged
 
     private void enableUOMItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_enableUOMItemStateChanged
         if (!enableUOM.isSelected()) {
@@ -521,6 +460,9 @@ public class addItemForm extends javax.swing.JFrame {
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         getSuppCatList();
+        if (compHide.equalsIgnoreCase("Edit") && (!itemIDText.isBlank() || !itemIDText.isEmpty())) {
+            getAllItemDetails(itemIDText.trim());
+        }
     }//GEN-LAST:event_formWindowGainedFocus
 
     /**
@@ -568,11 +510,9 @@ public class addItemForm extends javax.swing.JFrame {
     private javax.swing.JButton closeBtn;
     private javax.swing.JCheckBox enableUOM;
     private javax.swing.JTextField itemBarcode;
-    private javax.swing.JTextField itemColor;
     private javax.swing.JTextField itemDesc;
     private javax.swing.JTextField itemID;
-    private javax.swing.JTextField itemSizeChar;
-    private javax.swing.JSpinner itemSizeVal;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -580,10 +520,7 @@ public class addItemForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
@@ -634,9 +571,6 @@ public class addItemForm extends javax.swing.JFrame {
         itemDesc.setText("");
         itemBarcode.setText("");
         sellingPrice.setText("");
-        itemColor.setText("");
-        itemSizeChar.setText("");
-        itemSizeVal.setValue(0);
         unitPrice.setText("");
         UOMText.setText("");
         allowPWD.setSelected(false);
@@ -652,7 +586,7 @@ public class addItemForm extends javax.swing.JFrame {
             logs.setupLogger();
             String query = "SELECT supplierName "
                     + "FROM supplier "
-                    + "WHERE deletedOn IS NULL ";
+                    + "WHERE deletedOn IS NULL AND deletedBy ISNULL";
             rs = dbCore.getResultSet(query);
             suppList.removeAllItems();
             suppList.addItem("");
@@ -673,7 +607,7 @@ public class addItemForm extends javax.swing.JFrame {
             logs.setupLogger();
             String query = "SELECT description "
                     + "FROM itemcategory "
-                    + "WHERE deletedOn IS NULL ";
+                    + "WHERE deletedOn IS NULL AND deletedBy ISNULL";
             rs = dbCore.getResultSet(query);
             categoryList.removeAllItems();
             categoryList.addItem("");
@@ -693,12 +627,83 @@ public class addItemForm extends javax.swing.JFrame {
         getCategoryList();
     }
 
-    public void setItemID(String itemID) {
-        itemIDText = itemID;
+    private void getAllItemDetails(String itemID) {
+        try {
+            ResultSet rs;
+            logs.setupLogger();
+            String query = "SELECT "
+                    + "    ih.itemID AS `ItemID`, "
+                    + "    ih.itemDescription AS `itemDescription`, "
+                    + "    s.supplierName AS `supplierName`, "
+                    + "    id.unitPrice AS `unitPrice`, "
+                    + "    ic.description AS `categoryName`, "
+                    + "    id.discountPWDAllowed AS `discountPWDAllowed`, "
+                    + "    id.discountSCAllowed AS `discountSCAllowed`, "
+                    + "    IFNULL(ip.value, '') AS `ItemPrice`, "
+                    + "    IFNULL(id.unitOfMeasure, '') AS `UOM`, "
+                    + "    (SELECT ib.barcode "
+                    + "     FROM itembarcode ib "
+                    + "     WHERE ib.itemID = ih.itemID "
+                    + "     ORDER BY ib.Auto_ID DESC "
+                    + "     LIMIT 1) AS `barcode` "
+                    + "FROM itemheader ih "
+                    + "JOIN itemdetail id ON ih.itemID = id.itemID "
+                    + "JOIN itemcategory ic ON id.categoryID = ic.categoryID "
+                    + "JOIN supplier s ON s.supplierID = ih.supplierID "
+                    + "LEFT JOIN itemprice ip ON ih.itemID = ip.itemID "
+                    + "WHERE ih.deletedOn IS NULL ";
+            rs = dbCore.getResultSet(query);
+            if (rs.next()) {
+                String itemDescription = rs.getString("itemDescription");
+                String supplierName = rs.getString("supplierName");
+                String unitPrices = rs.getString("unitPrice");
+                String categoryName = rs.getString("categoryName");
+                String PWDAllowed = rs.getString("discountPWDAllowed");
+                String SeniorAllowed = rs.getString("discountSCAllowed");
+                String sellingPrices = rs.getString("ItemPrice");
+                String barcode = rs.getString("barcode");
+                String UnitOfMeasure = rs.getString("UOM");
+                setItemDetails(itemID, itemDescription, supplierName, unitPrices, categoryName,
+                        PWDAllowed, SeniorAllowed, sellingPrices, barcode, UnitOfMeasure);
+            }
+        } catch (Exception e) {
+            logs.logger.log(Level.SEVERE, "An exception occurred", e);
+        } finally {
+            logs.closeLogger();
+        }
     }
 
-    private void getAllItemDetails(String itemID) {
+    private void setItemDetails(String itemIDs,
+            String itemDescription,
+            Object supplierName,
+            String unitPrices,
+            Object categoryName,
+            String PWDAllowed,
+            String SeniorAllowed,
+            String sellingPrices,
+            String barcode,
+            String UOMTexts) {
+        itemID.setText(itemIDs);
+        itemDesc.setText(itemDescription);
+        itemBarcode.setText(barcode);
+        sellingPrice.setText(sellingPrices);
+        unitPrice.setText(unitPrices);
+        suppList.setSelectedItem(supplierName);
+        categoryList.setSelectedItem(categoryName);
+        if (PWDAllowed.equalsIgnoreCase("1")) {
+            allowPWD.setSelected(true);
+        }
 
+        if (SeniorAllowed.equalsIgnoreCase("1")) {
+            allowSenior.setSelected(true);
+        }
+
+        if (!UOMTexts.isBlank() || !UOMTexts.isEmpty()) {
+            enableUOM.setSelected(true);
+            UOMText.setText(UOMTexts);
+        } else {
+            UOMText.setText("");
+        }
     }
 
     private String getItemDesc(String itemID) {

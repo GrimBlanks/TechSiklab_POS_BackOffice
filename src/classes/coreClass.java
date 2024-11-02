@@ -92,9 +92,6 @@ public class coreClass {
             int SeniorAllowed,
             double sellingPrice,
             String barcode,
-            String color,
-            String initialSize,
-            int value,
             String UOMText) {
         try {
             logs.setupLogger();
@@ -107,7 +104,7 @@ public class coreClass {
                 dbCore.execute(query);
                 query = "INSERT INTO itembarcode(itemID, barcode, addedOn, addedBy) VALUES('" + itemID + "', '" + barcode + "', NOW(), '" + accountID + "'); ";
                 dbCore.execute(query);
-                query = "INSERT INTO itemsubdetail(barcode, color, sizeInitial, sizeValue) VALUES('" + barcode + "', '" + color + "', '" + initialSize + "', '" + value + "');";
+                query = "INSERT INTO itemprice(itemID, value, addedOn, addedBy) VALUES('" + itemID + "', '" + sellingPrice + "', NOW(), '" + accountID + "'); ";
                 dbCore.execute(query);
             } else {
                 JOptionPane.showMessageDialog(null, "Please login before adding an item.", "Warning", 1);
@@ -197,5 +194,23 @@ public class coreClass {
             logs.closeLogger();
         }
         return res;
+    }
+
+    public void deleteItem(String itemID, String accountID) {
+        try {
+            logs.setupLogger();
+            if (!accountID.isBlank() || !accountID.isEmpty()) {
+                String query = "UPDATE itemheader "
+                        + "SET deletedOn = NOW(), deletedBy = '" + accountID + "' "
+                        + "WHERE itemID = '" + itemID + "'";
+                dbCore.executeUpdate(query);
+            } else {
+                JOptionPane.showMessageDialog(null, "Please login before deleteing an item", "Warning", 1);
+            }
+        } catch (Exception e) {
+            logs.logger.log(Level.SEVERE, "An exception occurred", e);
+        } finally {
+            logs.closeLogger();
+        }
     }
 }
