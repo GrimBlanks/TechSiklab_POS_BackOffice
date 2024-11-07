@@ -7,7 +7,6 @@ public class databaseCore {
     Connection con;
     Statement st;
     public static ResultSet rs;
-    String query = "";
     logging logs = new logging();
 
     private void connect() {

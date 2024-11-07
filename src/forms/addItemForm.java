@@ -292,6 +292,11 @@ public class addItemForm extends javax.swing.JFrame {
         });
 
         jButton1.setText("See Barcodes");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -427,6 +432,7 @@ public class addItemForm extends javax.swing.JFrame {
 
             core.addItem(itemIDs, itemDescription, suppID, core.getAccountID(), initialPrice,
                     catID, pwd, scd, sellPrice, itemBar, UOMDesc);
+            dispose();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -464,6 +470,10 @@ public class addItemForm extends javax.swing.JFrame {
             getAllItemDetails(itemIDText.trim());
         }
     }//GEN-LAST:event_formWindowGainedFocus
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        new barcodeListForm().setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -586,7 +596,7 @@ public class addItemForm extends javax.swing.JFrame {
             logs.setupLogger();
             String query = "SELECT supplierName "
                     + "FROM supplier "
-                    + "WHERE deletedOn IS NULL AND deletedBy ISNULL";
+                    + "WHERE deletedOn IS NULL AND deletedBy IS NULL";
             rs = dbCore.getResultSet(query);
             suppList.removeAllItems();
             suppList.addItem("");
@@ -607,7 +617,7 @@ public class addItemForm extends javax.swing.JFrame {
             logs.setupLogger();
             String query = "SELECT description "
                     + "FROM itemcategory "
-                    + "WHERE deletedOn IS NULL AND deletedBy ISNULL";
+                    + "WHERE deletedOn IS NULL AND deletedBy IS NULL";
             rs = dbCore.getResultSet(query);
             categoryList.removeAllItems();
             categoryList.addItem("");

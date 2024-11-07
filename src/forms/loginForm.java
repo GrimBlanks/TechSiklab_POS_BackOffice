@@ -10,7 +10,6 @@ public class loginForm extends javax.swing.JFrame {
 
     public loginForm() {
         initComponents();
-        jLabel2.insets().left = 12;
     }
 
     @SuppressWarnings("unchecked")

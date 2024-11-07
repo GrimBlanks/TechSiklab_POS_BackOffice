@@ -20,7 +20,6 @@ public class dbConnect {
 
             // Establish the connection
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
-
             // Perform database operations here...
         } catch (ClassNotFoundException | SQLException e) {
             logs.logger.log(java.util.logging.Level.SEVERE, "An exception occurred", e);
