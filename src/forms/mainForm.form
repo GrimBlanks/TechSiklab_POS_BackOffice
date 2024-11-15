@@ -146,7 +146,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel1" min="-2" pref="96" max="-2" attributes="0"/>
-                              <Component id="jTextField1" min="-2" pref="200" max="-2" attributes="0"/>
+                              <Component id="itemSearch" min="-2" pref="200" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="628" max="32767" attributes="0"/>
                           <Component id="jButton3" min="-2" pref="75" max="-2" attributes="0"/>
@@ -166,7 +166,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jLabel1" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jTextField1" min="-2" pref="34" max="-2" attributes="0"/>
+                                  <Component id="itemSearch" min="-2" pref="34" max="-2" attributes="0"/>
                               </Group>
                               <Component id="jButton1" alignment="1" min="-2" pref="68" max="-2" attributes="0"/>
                               <Component id="jButton2" alignment="1" min="-2" pref="68" max="-2" attributes="0"/>
@@ -178,7 +178,7 @@
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JTextField" name="jTextField1">
+                <Component class="javax.swing.JTextField" name="itemSearch">
                   <Properties>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
@@ -186,6 +186,9 @@
                       </Border>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="itemSearchKeyReleased"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel1">
                   <Properties>
@@ -444,17 +447,20 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jTabbedPane1" alignment="0" max="32767" attributes="0"/>
+                  <Component id="accountsTab" alignment="0" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jTabbedPane1" alignment="0" max="32767" attributes="0"/>
+                  <Component id="accountsTab" alignment="0" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">
+            <Container class="javax.swing.JTabbedPane" name="accountsTab">
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="accountsTabStateChanged"/>
+              </Events>
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
               <SubComponents>
@@ -509,7 +515,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="jLabel3" alignment="0" min="-2" pref="96" max="-2" attributes="0"/>
-                                      <Component id="jTextField3" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                                      <Component id="operatorSearch" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace pref="628" max="32767" attributes="0"/>
                                   <Component id="jButton8" min="-2" pref="75" max="-2" attributes="0"/>
@@ -529,7 +535,7 @@
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="jLabel3" max="32767" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jTextField3" min="-2" pref="34" max="-2" attributes="0"/>
+                                          <Component id="operatorSearch" min="-2" pref="34" max="-2" attributes="0"/>
                                       </Group>
                                       <Component id="jButton6" alignment="1" min="-2" pref="68" max="-2" attributes="0"/>
                                       <Component id="jButton7" alignment="1" min="-2" pref="68" max="-2" attributes="0"/>
@@ -541,7 +547,7 @@
                         </DimensionLayout>
                       </Layout>
                       <SubComponents>
-                        <Component class="javax.swing.JTextField" name="jTextField3">
+                        <Component class="javax.swing.JTextField" name="operatorSearch">
                           <Properties>
                             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
@@ -549,6 +555,9 @@
                               </Border>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="operatorSearchKeyReleased"/>
+                          </Events>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel3">
                           <Properties>
@@ -668,7 +677,7 @@
 
                           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                           <SubComponents>
-                            <Component class="javax.swing.JTable" name="itemTable2">
+                            <Component class="javax.swing.JTable" name="operatorTable">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                                   <Font name="Segoe UI" size="14" style="0"/>
@@ -711,8 +720,8 @@
                                 </Property>
                               </Properties>
                               <Events>
-                                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="itemTable2MousePressed"/>
-                                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="itemTable2KeyReleased"/>
+                                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="operatorTableMousePressed"/>
+                                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="operatorTableKeyReleased"/>
                               </Events>
                             </Component>
                           </SubComponents>
@@ -780,7 +789,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="jLabel4" alignment="0" min="-2" pref="96" max="-2" attributes="0"/>
-                                      <Component id="jTextField4" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                                      <Component id="profileSearch" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace pref="628" max="32767" attributes="0"/>
                                   <Component id="jButton13" min="-2" pref="75" max="-2" attributes="0"/>
@@ -800,7 +809,7 @@
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="jLabel4" max="32767" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jTextField4" min="-2" pref="34" max="-2" attributes="0"/>
+                                          <Component id="profileSearch" min="-2" pref="34" max="-2" attributes="0"/>
                                       </Group>
                                       <Component id="jButton11" alignment="1" min="-2" pref="68" max="-2" attributes="0"/>
                                       <Component id="jButton12" alignment="1" min="-2" pref="68" max="-2" attributes="0"/>
@@ -812,7 +821,7 @@
                         </DimensionLayout>
                       </Layout>
                       <SubComponents>
-                        <Component class="javax.swing.JTextField" name="jTextField4">
+                        <Component class="javax.swing.JTextField" name="profileSearch">
                           <Properties>
                             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
@@ -939,7 +948,7 @@
 
                           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                           <SubComponents>
-                            <Component class="javax.swing.JTable" name="itemTable3">
+                            <Component class="javax.swing.JTable" name="profileTable">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                                   <Font name="Segoe UI" size="14" style="0"/>
@@ -982,8 +991,8 @@
                                 </Property>
                               </Properties>
                               <Events>
-                                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="itemTable3MousePressed"/>
-                                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="itemTable3KeyReleased"/>
+                                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="profileTableMousePressed"/>
+                                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="profileTableKeyReleased"/>
                               </Events>
                             </Component>
                           </SubComponents>

@@ -2,6 +2,7 @@ package forms;
 
 import classes.coreClass;
 import classes.databaseCore;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
 
@@ -21,7 +22,7 @@ public class mainForm extends javax.swing.JFrame {
         tabPane = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        itemSearch = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -35,10 +36,10 @@ public class mainForm extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        accountsTab = new javax.swing.JTabbedPane();
         jPanel8 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
-        jTextField3 = new javax.swing.JTextField();
+        operatorSearch = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
@@ -46,11 +47,11 @@ public class mainForm extends javax.swing.JFrame {
         jPanel11 = new javax.swing.JPanel();
         jButton9 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        itemTable2 = new javax.swing.JTable();
+        operatorTable = new javax.swing.JTable();
         jButton10 = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
-        jTextField4 = new javax.swing.JTextField();
+        profileSearch = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jButton11 = new javax.swing.JButton();
         jButton12 = new javax.swing.JButton();
@@ -58,7 +59,7 @@ public class mainForm extends javax.swing.JFrame {
         jPanel13 = new javax.swing.JPanel();
         jButton14 = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
-        itemTable3 = new javax.swing.JTable();
+        profileTable = new javax.swing.JTable();
         jButton15 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -84,7 +85,12 @@ public class mainForm extends javax.swing.JFrame {
 
         jPanel5.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
-        jTextField1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        itemSearch.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        itemSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                itemSearchKeyReleased(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("Search");
@@ -127,7 +133,7 @@ public class mainForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(itemSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 628, Short.MAX_VALUE)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -144,7 +150,7 @@ public class mainForm extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(itemSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -272,9 +278,20 @@ public class mainForm extends javax.swing.JFrame {
 
         tabPane.addTab("Promotion Manager", jPanel4);
 
+        accountsTab.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                accountsTabStateChanged(evt);
+            }
+        });
+
         jPanel10.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
-        jTextField3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        operatorSearch.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        operatorSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                operatorSearchKeyReleased(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setText("Search");
@@ -317,7 +334,7 @@ public class mainForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(operatorSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 628, Short.MAX_VALUE)
                 .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -334,7 +351,7 @@ public class mainForm extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel10Layout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(operatorSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -346,8 +363,8 @@ public class mainForm extends javax.swing.JFrame {
         jButton9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton9.setText("NEXT");
 
-        itemTable2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        itemTable2.setModel(new javax.swing.table.DefaultTableModel(
+        operatorTable.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        operatorTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -358,18 +375,18 @@ public class mainForm extends javax.swing.JFrame {
                 "ItemID", "Description", "Category", "Supplier"
             }
         ));
-        itemTable2.setRowHeight(40);
-        itemTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+        operatorTable.setRowHeight(40);
+        operatorTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                itemTable2MousePressed(evt);
+                operatorTableMousePressed(evt);
             }
         });
-        itemTable2.addKeyListener(new java.awt.event.KeyAdapter() {
+        operatorTable.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                itemTable2KeyReleased(evt);
+                operatorTableKeyReleased(evt);
             }
         });
-        jScrollPane3.setViewportView(itemTable2);
+        jScrollPane3.setViewportView(operatorTable);
 
         jButton10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton10.setText("PREV");
@@ -421,11 +438,11 @@ public class mainForm extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Operators", jPanel8);
+        accountsTab.addTab("Operators", jPanel8);
 
         jPanel12.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
-        jTextField4.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        profileSearch.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setText("Search");
@@ -468,7 +485,7 @@ public class mainForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(profileSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 628, Short.MAX_VALUE)
                 .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -485,7 +502,7 @@ public class mainForm extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel12Layout.createSequentialGroup()
                         .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(profileSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -497,8 +514,8 @@ public class mainForm extends javax.swing.JFrame {
         jButton14.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton14.setText("NEXT");
 
-        itemTable3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        itemTable3.setModel(new javax.swing.table.DefaultTableModel(
+        profileTable.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        profileTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -509,18 +526,18 @@ public class mainForm extends javax.swing.JFrame {
                 "ItemID", "Description", "Category", "Supplier"
             }
         ));
-        itemTable3.setRowHeight(40);
-        itemTable3.addMouseListener(new java.awt.event.MouseAdapter() {
+        profileTable.setRowHeight(40);
+        profileTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                itemTable3MousePressed(evt);
+                profileTableMousePressed(evt);
             }
         });
-        itemTable3.addKeyListener(new java.awt.event.KeyAdapter() {
+        profileTable.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                itemTable3KeyReleased(evt);
+                profileTableKeyReleased(evt);
             }
         });
-        jScrollPane4.setViewportView(itemTable3);
+        jScrollPane4.setViewportView(profileTable);
 
         jButton15.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton15.setText("PREV");
@@ -572,17 +589,17 @@ public class mainForm extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Profile", jPanel9);
+        accountsTab.addTab("Profile", jPanel9);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(accountsTab)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(accountsTab)
         );
 
         tabPane.addTab("Account Manager", jPanel6);
@@ -649,7 +666,19 @@ public class mainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void tabPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabPaneStateChanged
-        showItems();
+        if (tabPane.getSelectedIndex() == 0) {
+            showItems();
+        } else if (tabPane.getSelectedIndex() == 1) {
+
+        } else if (tabPane.getSelectedIndex() == 2) {
+
+        } else if (tabPane.getSelectedIndex() == 3) {
+
+        } else if (accountsTab.getSelectedIndex() == 0 && tabPane.getSelectedIndex() == 4) {
+            showOperators();
+        } else if (accountsTab.getSelectedIndex() == 1 && tabPane.getSelectedIndex() == 4) {
+            showProfiles();
+        }
     }//GEN-LAST:event_tabPaneStateChanged
 
     private void itemTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_itemTableKeyReleased
@@ -709,13 +738,13 @@ public class mainForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton8ActionPerformed
 
-    private void itemTable2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemTable2MousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_itemTable2MousePressed
+    private void operatorTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_operatorTableMousePressed
+        operatorTable.removeEditor();
+    }//GEN-LAST:event_operatorTableMousePressed
 
-    private void itemTable2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_itemTable2KeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_itemTable2KeyReleased
+    private void operatorTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_operatorTableKeyReleased
+        operatorTable.removeEditor();
+    }//GEN-LAST:event_operatorTableKeyReleased
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         // TODO add your handling code here:
@@ -729,13 +758,41 @@ public class mainForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton13ActionPerformed
 
-    private void itemTable3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemTable3MousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_itemTable3MousePressed
+    private void profileTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profileTableMousePressed
+        profileTable.removeEditor();
+    }//GEN-LAST:event_profileTableMousePressed
 
-    private void itemTable3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_itemTable3KeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_itemTable3KeyReleased
+    private void profileTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_profileTableKeyReleased
+        profileTable.removeEditor();
+    }//GEN-LAST:event_profileTableKeyReleased
+
+    private void accountsTabStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_accountsTabStateChanged
+        if (accountsTab.getSelectedIndex() == 0 && tabPane.getSelectedIndex() == 4) {
+            showOperators();
+        } else if (accountsTab.getSelectedIndex() == 1 && tabPane.getSelectedIndex() == 4) {
+            showProfiles();
+        }
+    }//GEN-LAST:event_accountsTabStateChanged
+
+    private void operatorSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_operatorSearchKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            showOperators();
+        }
+
+        if (operatorSearch.getText().isEmpty() || operatorSearch.getText().isBlank()) {
+            showOperators();
+        }
+    }//GEN-LAST:event_operatorSearchKeyReleased
+
+    private void itemSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_itemSearchKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            showItems();
+        }
+
+        if (itemSearch.getText().isEmpty() || itemSearch.getText().isBlank()) {
+            showItems();
+        }
+    }//GEN-LAST:event_itemSearchKeyReleased
 
     /**
      * @param args the command line arguments
@@ -773,9 +830,9 @@ public class mainForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTabbedPane accountsTab;
+    private javax.swing.JTextField itemSearch;
     private javax.swing.JTable itemTable;
-    private javax.swing.JTable itemTable2;
-    private javax.swing.JTable itemTable3;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -815,10 +872,10 @@ public class mainForm extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField operatorSearch;
+    private javax.swing.JTable operatorTable;
+    private javax.swing.JTextField profileSearch;
+    private javax.swing.JTable profileTable;
     private javax.swing.JTabbedPane tabPane;
     // End of variables declaration//GEN-END:variables
 
@@ -830,10 +887,43 @@ public class mainForm extends javax.swing.JFrame {
                         + "JOIN supplier s "
                         + "ON ih.supplierID = s.supplierID "
                         + "WHERE ih.deletedOn IS NULL AND ih.deletedBy IS NULL ";
+                if (!itemSearch.getText().isBlank() || !itemSearch.getText().isEmpty()) {
+                    query += "AND (itemID REGEXP '" + itemSearch.getText() + "' OR itemDescription REGEXP '" + itemSearch.getText() + "' "
+                            + "OR s.supplierName REGEXP '" + itemSearch.getText() + "') ";
+                }
                 itemTable.setModel(DbUtils.resultSetToTableModel(dbCore.getResultSet(query)));
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void showProfiles() {
+        try {
+            String query = "SELECT ItemID AS `Item ID`, itemDescription AS `Item Description`, s.supplierName AS `Supplier`"
+                    + "FROM itemheader ih "
+                    + "JOIN supplier s "
+                    + "ON ih.supplierID = s.supplierID "
+                    + "WHERE ih.deletedOn IS NULL AND ih.deletedBy IS NULL ";
+            itemTable.setModel(DbUtils.resultSetToTableModel(dbCore.getResultSet(query)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showOperators() {
+        try {
+            String query = "SELECT ah.accountID AS `Account ID`, employeeID AS `Employee ID`, userName AS `Username` "
+                    + "FROM accountheader ah "
+                    + "JOIN accountdetail ad ON ah.accountID = ad.accountID "
+                    + "WHERE deletedOn IS NULL ";
+            if (!operatorSearch.getText().isBlank() || !operatorSearch.getText().isEmpty()) {
+                query += "AND ah.accountID REGEXP '" + operatorSearch.getText() + "' OR employeeID REGEXP '" + operatorSearch.getText() + "' "
+                        + "OR userName REGEXP '" + operatorSearch.getText() + "'";
+            }
+            operatorTable.setModel(DbUtils.resultSetToTableModel(dbCore.getResultSet(query)));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
