@@ -1,5 +1,6 @@
 package classes;
 
+import config.config;
 import java.io.IOException;
 import java.sql.*;
 import java.util.logging.Level;
@@ -212,5 +213,55 @@ public class coreClass {
         } finally {
             logs.closeLogger();
         }
+    }
+
+    public void addAccount(String empID, String firstName, String middleName, String lastName,
+            String userName, String passWord, String accountUntil) {
+        try {
+            logs.setupLogger();
+            String query = "INSERT INTO employees(employeeID, firstName, middleName, lastName) "
+                    + "VALUES ('" + empID + "', '" + firstName + "', '" + middleName + "', '" + lastName + "')";
+            if (middleName.isBlank() || middleName.isEmpty()) {
+                query = "INSERT INTO employees(employeeID, firstName, lastName) "
+                        + "VALUES ('" + empID + "', '" + firstName + "', '" + lastName + "')";
+            }
+            dbCore.execute(query);
+
+            config conf = new config();
+            coreClass core = new coreClass();
+            query = "INSERT INTO accountheader(accountID, employeeID, storeID, dateFrom, dateTo, addedBy, addedOn) "
+                    + "VALUES((SELECT COUNT(*) + 1 FROM accountdetail),'" + empID + "', " + conf.getStoreID() + ", DATE(NOW()), '" + accountUntil + "', '" + core.getAccountID() + "', DATE(NOW()))";
+            dbCore.execute(query);
+
+            query = "INSERT INTO accountdetail(accountID, userName, password) "
+                    + "VALUES((SELECT accountID FROM accountheader WHERE employeeID = '" + empID + "'), '" + userName + "', SHA2('" + passWord + "', 256))";
+            dbCore.execute(query);
+            JOptionPane.showMessageDialog(null, "Account added!", null, 1);
+        } catch (Exception e) {
+//            logs.logger.log(Level.SEVERE, "An exception occurred", e);
+            e.printStackTrace();
+        } finally {
+            logs.closeLogger();
+        }
+    }
+
+    public int getOperatorCount() {
+        int res = 0;
+        try {
+            logs.setupLogger();
+            String query = "SELECT COUNT(*) AS 'Counts' "
+                    + "FROM accountheader "
+                    + "WHERE deletedOn IS NULL ";
+            rs = dbCore.getResultSet(query);
+            if (rs.next()) {
+                res = Integer.parseInt(rs.getString("Counts"));
+            }
+            rs.close();
+        } catch (IOException | SQLException e) {
+            logs.logger.log(Level.SEVERE, "An exception occurred", e);
+        } finally {
+            logs.closeLogger();
+        }
+        return res;
     }
 }

@@ -45,13 +45,6 @@ public class databaseCore {
             connect();
             st.execute(query);
         } catch (SQLException e) {
-            try {
-                if (con != null) {
-                    con.rollback();
-                }
-            } catch (SQLException rollbackEx) {
-                logs.logger.log(java.util.logging.Level.SEVERE, "An exception occurred", rollbackEx);
-            }
             logs.logger.log(java.util.logging.Level.SEVERE, "An exception occurred", e);
         } finally {
             logs.closeLogger();
@@ -63,13 +56,6 @@ public class databaseCore {
             connect();
             st.executeUpdate(query);
         } catch (SQLException e) {
-            try {
-                if (con != null) {
-                    con.rollback();
-                }
-            } catch (SQLException rollbackEx) {
-                logs.logger.log(java.util.logging.Level.SEVERE, "An exception occurred", rollbackEx);
-            }
             logs.logger.log(java.util.logging.Level.SEVERE, "An exception occurred", e);
         } finally {
             logs.closeLogger();

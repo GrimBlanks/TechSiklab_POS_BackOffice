@@ -409,17 +409,16 @@ public class addItemForm extends javax.swing.JFrame {
             int suppID = 0;
             int catID = 0;
             String UOMDesc = UOMText.getText().toUpperCase();
+            boolean isInsertReady = false;
 
             if (categoryList.getSelectedIndex() == 0) {
-                JOptionPane.showMessageDialog(null, "Please select a category", "Warning", 1);
+                JOptionPane.showMessageDialog(null, "Category cannot be empty.", "Warning", 1);
+            } else if (suppList.getSelectedIndex() == 0) {
+                JOptionPane.showMessageDialog(null, "Supplier cannot be empty.", "Warning", 1);
             } else {
                 catID = getCategoryID(categoryList.getSelectedItem().toString());
-            }
-
-            if (suppList.getSelectedIndex() == 0) {
-                JOptionPane.showMessageDialog(null, "Please select a supplier", "Warning", 1);
-            } else {
                 suppID = getSuppID(suppList.getSelectedItem().toString());
+                isInsertReady = true;
             }
 
             if (allowPWD.isSelected()) {
@@ -430,9 +429,13 @@ public class addItemForm extends javax.swing.JFrame {
                 scd = 1;
             }
 
-            core.addItem(itemIDs, itemDescription, suppID, core.getAccountID(), initialPrice,
-                    catID, pwd, scd, sellPrice, itemBar, UOMDesc);
-            dispose();
+            if (isInsertReady) {
+                core.addItem(itemIDs, itemDescription, suppID, core.getAccountID(), initialPrice,
+                        catID, pwd, scd, sellPrice, itemBar, UOMDesc);
+                dispose();
+            }
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(null, "Please input a valid number. Try again.");
         } catch (Exception e) {
             e.printStackTrace();
         }

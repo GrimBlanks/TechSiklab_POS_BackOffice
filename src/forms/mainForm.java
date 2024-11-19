@@ -11,6 +11,10 @@ public class mainForm extends javax.swing.JFrame {
     coreClass core = new coreClass();
     databaseCore dbCore = new databaseCore();
 
+    final int tableCount = 50;
+    int initialCount = 0;
+    int maxCount = 50;
+
     public mainForm() {
         initComponents();
     }
@@ -189,6 +193,11 @@ public class mainForm extends javax.swing.JFrame {
 
         jButton4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton4.setText("PREV");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -362,6 +371,11 @@ public class mainForm extends javax.swing.JFrame {
 
         jButton9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton9.setText("NEXT");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
 
         operatorTable.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         operatorTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -390,6 +404,11 @@ public class mainForm extends javax.swing.JFrame {
 
         jButton10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton10.setText("PREV");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
@@ -727,7 +746,7 @@ public class mainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -735,7 +754,7 @@ public class mainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
+        new addOperatorForm().setVisible(true);
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void operatorTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_operatorTableMousePressed
@@ -793,6 +812,26 @@ public class mainForm extends javax.swing.JFrame {
             showItems();
         }
     }//GEN-LAST:event_itemSearchKeyReleased
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        if (core.getOperatorCount() > 50) {
+            initialCount -= tableCount;
+            maxCount -= tableCount;
+            showOperators();
+        }
+    }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        if (core.getOperatorCount() > 50) {
+            initialCount += tableCount;
+            maxCount += tableCount;
+            showOperators();
+        }
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -919,8 +958,9 @@ public class mainForm extends javax.swing.JFrame {
                     + "WHERE deletedOn IS NULL ";
             if (!operatorSearch.getText().isBlank() || !operatorSearch.getText().isEmpty()) {
                 query += "AND ah.accountID REGEXP '" + operatorSearch.getText() + "' OR employeeID REGEXP '" + operatorSearch.getText() + "' "
-                        + "OR userName REGEXP '" + operatorSearch.getText() + "'";
+                        + "OR userName REGEXP '" + operatorSearch.getText() + "' ";
             }
+            query += "LIMIT " + initialCount + ", " + maxCount + "";
             operatorTable.setModel(DbUtils.resultSetToTableModel(dbCore.getResultSet(query)));
         } catch (Exception e) {
             e.printStackTrace();
