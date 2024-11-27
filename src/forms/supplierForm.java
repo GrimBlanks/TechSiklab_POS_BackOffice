@@ -293,14 +293,13 @@ public class supplierForm extends javax.swing.JFrame {
         try {
             logs.setupLogger();
             String query = "SELECT supplierName AS `Supplier Name` "
-                    + "FROM supplier "
-                    + "WHERE deletedOn IS NULL "
-                    + "LIMIT " + initial + ", " + max + "";
+                    + "FROM supplier ";
             if (suppName != null && (!suppName.isBlank() || !suppName.isEmpty())) {
-                query = "SELECT supplierName AS `Supplier Name` "
-                        + "FROM supplier "
-                        + "WHERE supplierName REGEXP '" + suppName + "' "
+                query += "WHERE supplierName REGEXP '" + suppName + "' "
                         + "AND deletedOn IS NULL "
+                        + "LIMIT " + initial + ", " + max + "";
+            } else {
+                query += "WHERE deletedOn IS NULL "
                         + "LIMIT " + initial + ", " + max + "";
             }
             rs = dbCore.getResultSet(query);

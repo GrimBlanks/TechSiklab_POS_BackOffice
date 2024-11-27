@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
 
-public class categoryForm extends javax.swing.JFrame {
+public class profileGroupForm extends javax.swing.JFrame {
 
     ResultSet rs;
     coreClass core = new coreClass();
@@ -20,9 +20,9 @@ public class categoryForm extends javax.swing.JFrame {
     private int maxNum = 40;
     private final int addedNum = 40;
 
-    public categoryForm() {
+    public profileGroupForm() {
         initComponents();
-        showCategories(searchBar.getText(), initialNum, maxNum);
+        showGroupNames(null, initialNum, maxNum);
     }
 
     /**
@@ -105,7 +105,7 @@ public class categoryForm extends javax.swing.JFrame {
         });
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add supplier.png"))); // NOI18N
-        jLabel2.setText("Add Category");
+        jLabel2.setText("Add Group");
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel2MouseClicked(evt);
@@ -113,7 +113,7 @@ public class categoryForm extends javax.swing.JFrame {
         });
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete supplier.png"))); // NOI18N
-        jLabel3.setText("Delete Category");
+        jLabel3.setText("Delete Group");
         jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel3MouseClicked(evt);
@@ -133,7 +133,7 @@ public class categoryForm extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jButton1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 190, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
@@ -181,9 +181,12 @@ public class categoryForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void searchBarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchBarKeyReleased
-        showCategories(searchBar.getText(), initialNum, maxNum);
-    }//GEN-LAST:event_searchBarKeyReleased
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        String groupName = JOptionPane.showInputDialog(null, "Input supplier name");
+        if (groupName != null) {
+            core.insertGroupName(groupName.trim(), core.getAccountID());
+        }
+    }//GEN-LAST:event_jLabel2MouseClicked
 
     private void suppTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_suppTableMouseReleased
         suppTable.removeEditor();
@@ -193,52 +196,49 @@ public class categoryForm extends javax.swing.JFrame {
         suppTable.removeEditor();
     }//GEN-LAST:event_suppTableKeyReleased
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (getGroupCount() > 40) {
+            initialNum += addedNum;
+            maxNum += addedNum;
+            showGroupNames(searchBar.getText(), initialNum, maxNum);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (maxNum > 40) {
             initialNum -= addedNum;
             maxNum -= addedNum;
-            showCategories(searchBar.getText(), initialNum, maxNum);
+            showGroupNames(searchBar.getText(), initialNum, maxNum);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if (getCategoryCount() > 40) {
-            initialNum += addedNum;
-            maxNum += addedNum;
-            showCategories(searchBar.getText(), initialNum, maxNum);
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        String catName = JOptionPane.showInputDialog(null, "Input category name");
-        if (catName != null) {
-            core.insertCategory(catName.trim(), core.getAccountID());
-        }
-    }//GEN-LAST:event_jLabel2MouseClicked
+    private void searchBarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchBarKeyReleased
+        showGroupNames(searchBar.getText(), initialNum, maxNum);
+    }//GEN-LAST:event_searchBarKeyReleased
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
         try {
             int col = 0;
             int row = suppTable.getSelectedRow();
-            String categoryName = suppTable.getValueAt(row, col).toString();
+            String suppName = suppTable.getValueAt(row, col).toString();
 
-            int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this category?", "Warning", 0);
+            int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this group?", "Warning", 0);
             if (option == 0) {
-                core.deleteCategory(categoryName, core.getAccountID());
+                core.deleteProfileGroup(suppName, core.getAccountID());
             }
         } catch (ArrayIndexOutOfBoundsException ai) {
-            JOptionPane.showMessageDialog(null, "Please select a category to delete.", "Warning", 1);
+            JOptionPane.showMessageDialog(null, "Please select a group to delete.", "Warning", 1);
         } catch (NullPointerException npe) {
-            JOptionPane.showMessageDialog(null, "Please select a category to delete.", "Warning", 1);
+            JOptionPane.showMessageDialog(null, "Please select a group to delete.", "Warning", 1);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        showCategories(searchBar.getText(), initialNum, maxNum);
+        showGroupNames(searchBar.getText(), initialNum, maxNum);
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
-        showCategories(searchBar.getText(), initialNum, maxNum);
+        showGroupNames(searchBar.getText(), initialNum, maxNum);
     }//GEN-LAST:event_formWindowGainedFocus
 
     /**
@@ -258,20 +258,23 @@ public class categoryForm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(categoryForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(profileGroupForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(categoryForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(profileGroupForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(categoryForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(profileGroupForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(categoryForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(profileGroupForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new categoryForm().setVisible(true);
+                new profileGroupForm().setVisible(true);
             }
         });
     }
@@ -288,18 +291,21 @@ public class categoryForm extends javax.swing.JFrame {
     private javax.swing.JTable suppTable;
     // End of variables declaration//GEN-END:variables
 
-    private void showCategories(String catName, int initial, int max) {
+    private void showGroupNames(String groupName, int initial, int max) {
         try {
             logs.setupLogger();
-            String query = "SELECT description AS `Category Name` "
-                    + "FROM itemcategory ";
-            if (catName != null && (!catName.isBlank() || !catName.isEmpty())) {
-                query += "WHERE description REGEXP '" + catName + "' "
+            String query = "SELECT description AS `Description` "
+                    + "FROM profilegroup ";
+
+            if (groupName != null && (!groupName.isBlank() || !groupName.isEmpty())) {
+                query += "WHERE description REGEXP '" + groupName + "' "
                         + "AND deletedOn IS NULL "
-                        + "LIMIT " + initial + ", " + max + "";
+                        + "ORDER BY description "
+                        + "LIMIT " + initial + ", " + max + " ";
             } else {
                 query += "WHERE deletedOn IS NULL "
-                        + "LIMIT " + initial + ", " + max + "";
+                        + "ORDER BY description "
+                        + "LIMIT " + initial + ", " + max + " ";
             }
             rs = dbCore.getResultSet(query);
             suppTable.setModel(DbUtils.resultSetToTableModel(rs));
@@ -310,11 +316,11 @@ public class categoryForm extends javax.swing.JFrame {
         }
     }
 
-    private int getCategoryCount() {
+    private int getGroupCount() {
         int count = 0;
         try {
             logs.setupLogger();
-            String query = "SELECT COUNT(*) AS `Counts` FROM itemcategory WHERE deletedOn IS NULL";
+            String query = "SELECT COUNT(*) AS `Counts` FROM profilegroup WHERE deletedOn IS NULL";
             rs = dbCore.getResultSet(query);
             if (rs.next()) {
                 count = Integer.parseInt(rs.getString("Counts"));

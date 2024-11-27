@@ -39,7 +39,8 @@ public class coreClass {
             if (!accountID.isBlank() || !accountID.isEmpty()) {
                 String query = "UPDATE supplier "
                         + "SET deletedOn = NOW(), deletedBy = '" + accountID + "' "
-                        + "WHERE supplierName = '" + suppName + "'";
+                        + "WHERE supplierName = '" + suppName + "' "
+                        + "AND deletedOn IS NULL";
                 dbCore.executeUpdate(query);
             } else {
                 JOptionPane.showMessageDialog(null, "Please login before deleteing a supplier", "Warning", 1);
@@ -263,5 +264,44 @@ public class coreClass {
             logs.closeLogger();
         }
         return res;
+    }
+
+    public void insertGroupName(String suppName, String accountID) {
+        try {
+            logs.setupLogger();
+            if (!accountID.isBlank() || !accountID.isEmpty()) {
+                if (isSupplierExisting(suppName)) {
+                    JOptionPane.showMessageDialog(null, "Supplier existing. Try again.");
+                } else {
+                    String query = "INSERT INTO profilegroup(description, addedOn, addedBy) VALUES('" + suppName + "', NOW(), '" + accountID + "')";
+                    dbCore.execute(query);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Please login before adding a profile group.", "Warning", 1);
+            }
+        } catch (Exception e) {
+            logging.logger.log(Level.SEVERE, "An exception occurred", e);
+        } finally {
+            logs.closeLogger();
+        }
+    }
+
+    public void deleteProfileGroup(String groupName, String accountID) {
+        try {
+            logs.setupLogger();
+            if (!accountID.isBlank() || !accountID.isEmpty()) {
+                String query = "UPDATE profilegroup "
+                        + "SET deletedOn = NOW(), deletedBy = '" + accountID + "' "
+                        + "WHERE description = '" + groupName + "' "
+                        + "AND deletedOn IS NULL";
+                dbCore.executeUpdate(query);
+            } else {
+                JOptionPane.showMessageDialog(null, "Please login before deleteing a group", "Warning", 1);
+            }
+        } catch (Exception e) {
+            logs.logger.log(Level.SEVERE, "An exception occurred", e);
+        } finally {
+            logs.closeLogger();
+        }
     }
 }

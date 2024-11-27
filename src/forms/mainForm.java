@@ -388,8 +388,17 @@ public class mainForm extends javax.swing.JFrame {
             new String [] {
                 "ItemID", "Description", "Category", "Supplier"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         operatorTable.setRowHeight(40);
+        operatorTable.getTableHeader().setReorderingAllowed(false);
         operatorTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 operatorTableMousePressed(evt);
@@ -745,64 +754,6 @@ public class mainForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-
-    }//GEN-LAST:event_jButton6ActionPerformed
-
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton7ActionPerformed
-
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        new addOperatorForm().setVisible(true);
-    }//GEN-LAST:event_jButton8ActionPerformed
-
-    private void operatorTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_operatorTableMousePressed
-        operatorTable.removeEditor();
-    }//GEN-LAST:event_operatorTableMousePressed
-
-    private void operatorTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_operatorTableKeyReleased
-        operatorTable.removeEditor();
-    }//GEN-LAST:event_operatorTableKeyReleased
-
-    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton11ActionPerformed
-
-    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton12ActionPerformed
-
-    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton13ActionPerformed
-
-    private void profileTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profileTableMousePressed
-        profileTable.removeEditor();
-    }//GEN-LAST:event_profileTableMousePressed
-
-    private void profileTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_profileTableKeyReleased
-        profileTable.removeEditor();
-    }//GEN-LAST:event_profileTableKeyReleased
-
-    private void accountsTabStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_accountsTabStateChanged
-        if (accountsTab.getSelectedIndex() == 0 && tabPane.getSelectedIndex() == 4) {
-            showOperators();
-        } else if (accountsTab.getSelectedIndex() == 1 && tabPane.getSelectedIndex() == 4) {
-            showProfiles();
-        }
-    }//GEN-LAST:event_accountsTabStateChanged
-
-    private void operatorSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_operatorSearchKeyReleased
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            showOperators();
-        }
-
-        if (operatorSearch.getText().isEmpty() || operatorSearch.getText().isBlank()) {
-            showOperators();
-        }
-    }//GEN-LAST:event_operatorSearchKeyReleased
-
     private void itemSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_itemSearchKeyReleased
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             showItems();
@@ -813,25 +764,83 @@ public class mainForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_itemSearchKeyReleased
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void accountsTabStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_accountsTabStateChanged
+        if (accountsTab.getSelectedIndex() == 0 && tabPane.getSelectedIndex() == 4) {
+            showOperators();
+        } else if (accountsTab.getSelectedIndex() == 1 && tabPane.getSelectedIndex() == 4) {
+            showProfiles();
+        }
+    }//GEN-LAST:event_accountsTabStateChanged
+
+    private void profileTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_profileTableKeyReleased
+        profileTable.removeEditor();
+    }//GEN-LAST:event_profileTableKeyReleased
+
+    private void profileTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profileTableMousePressed
+        profileTable.removeEditor();
+    }//GEN-LAST:event_profileTableMousePressed
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        new addProfileForm().setVisible(true);
+    }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton11ActionPerformed
+
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        if (core.getOperatorCount() > 50) {
+        if (initialCount >= 50) {
             initialCount -= tableCount;
             maxCount -= tableCount;
             showOperators();
         }
     }//GEN-LAST:event_jButton10ActionPerformed
 
+    private void operatorTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_operatorTableKeyReleased
+        operatorTable.removeEditor();
+    }//GEN-LAST:event_operatorTableKeyReleased
+
+    private void operatorTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_operatorTableMousePressed
+        operatorTable.removeEditor();
+    }//GEN-LAST:event_operatorTableMousePressed
+
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        if (core.getOperatorCount() > 50) {
+        if (core.getOperatorCount() > maxCount) {
             initialCount += tableCount;
             maxCount += tableCount;
             showOperators();
         }
     }//GEN-LAST:event_jButton9ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        new addOperatorForm().setVisible(true);
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void operatorSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_operatorSearchKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            showOperators();
+        }
+
+        if (operatorSearch.getText().isEmpty() || operatorSearch.getText().isBlank()) {
+            showOperators();
+        }
+    }//GEN-LAST:event_operatorSearchKeyReleased
 
     /**
      * @param args the command line arguments
@@ -870,7 +879,7 @@ public class mainForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane accountsTab;
-    private javax.swing.JTextField itemSearch;
+    public static javax.swing.JTextField itemSearch;
     private javax.swing.JTable itemTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
@@ -960,7 +969,7 @@ public class mainForm extends javax.swing.JFrame {
                 query += "AND ah.accountID REGEXP '" + operatorSearch.getText() + "' OR employeeID REGEXP '" + operatorSearch.getText() + "' "
                         + "OR userName REGEXP '" + operatorSearch.getText() + "' ";
             }
-            query += "LIMIT " + initialCount + ", " + maxCount + "";
+            query += "ORDER BY ah.accountID LIMIT " + initialCount + ", " + maxCount + " ";
             operatorTable.setModel(DbUtils.resultSetToTableModel(dbCore.getResultSet(query)));
         } catch (Exception e) {
             e.printStackTrace();
