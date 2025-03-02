@@ -266,14 +266,14 @@ public class coreClass {
         return res;
     }
 
-    public void insertGroupName(String suppName, String accountID) {
+    public void insertGroupName(String groupName, String accountID) {
         try {
             logs.setupLogger();
             if (!accountID.isBlank() || !accountID.isEmpty()) {
-                if (isSupplierExisting(suppName)) {
-                    JOptionPane.showMessageDialog(null, "Supplier existing. Try again.");
+                if (isProfileGroupExisting(groupName)) {
+                    JOptionPane.showMessageDialog(null, "Profile Group existing. Try again.");
                 } else {
-                    String query = "INSERT INTO profilegroup(description, addedOn, addedBy) VALUES('" + suppName + "', NOW(), '" + accountID + "')";
+                    String query = "INSERT INTO profilegroup(description, addedOn, addedBy) VALUES('" + groupName + "', NOW(), '" + accountID + "')";
                     dbCore.execute(query);
                 }
             } else {
@@ -303,5 +303,61 @@ public class coreClass {
         } finally {
             logs.closeLogger();
         }
+    }
+
+    public void insertProfileHeader(String accountID, String addedBy, String groupName, int discountOverrideFlag, int abortReceiptFlag,
+            int voidReceiptFlag, int totalDiscountFlag, int reprintReceiptFlag, int lineVoidFlag, int priceOverrideFlag) {
+        try {
+            logs.setupLogger();
+
+            ResultSet rs;
+            int groupID = 0;
+            String query = "SELECT Auto_ID FROM profilegroup WHERE description = '" + groupName + "' AND deletedOn IS NULL ";
+            rs = dbCore.getResultSet(query);
+            if (rs.next()) {
+                groupID = Integer.parseInt(rs.getString("Auto_ID"));
+            }
+
+            query = "INSERT INTO profileheader(accountID, profileGroupID, addedOn, addedBy) "
+                    + "VALUES ('" + accountID + "'," + groupID + ",NOW(), '" + addedBy + "')";
+            dbCore.execute(query);
+
+            query = "SELECT Auto_ID FROM profileheader WHERE accountID = '" + accountID + "' AND deletedOn IS NULL ORDER BY Auto_ID DESC LIMIT 1 ";
+            rs = dbCore.getResultSet(query);
+            int profileID = 0;
+            if (rs.next()) {
+                profileID = Integer.parseInt(rs.getString("Auto_ID"));
+            }
+
+            query = "INSERT INTO profileprotocol(profileProtocolID ,profileID, discountOverride, abortReceipt, totalDiscount, voidReceipt, reprintReceipt, lineVoid, priceOverride) "
+                    + "VALUES (" + groupID + "," + profileID + ", " + discountOverrideFlag + "," + abortReceiptFlag + "," + totalDiscountFlag + "," + voidReceiptFlag + "," + reprintReceiptFlag + "," + lineVoidFlag + "," + priceOverrideFlag + ")";
+            dbCore.executeUpdate(query);
+
+        } catch (Exception e) {
+            logging.logger.log(Level.SEVERE, "An exception occurred", e);
+        } finally {
+            logs.closeLogger();
+        }
+    }
+
+    private boolean isProfileGroupExisting(String groupName) {
+        boolean res = false;
+        try {
+            logs.setupLogger();
+            String query = "SELECT * "
+                    + "FROM profilegroup "
+                    + "WHERE description = '" + groupName + "' "
+                    + "AND deletedOn IS NULL ";
+            rs = dbCore.getResultSet(query);
+            if (rs.next()) {
+                res = true;
+            }
+            rs.close();
+        } catch (IOException | SQLException e) {
+            logs.logger.log(Level.SEVERE, "An exception occurred", e);
+        } finally {
+            logs.closeLogger();
+        }
+        return res;
     }
 }

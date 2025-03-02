@@ -11,9 +11,11 @@ public class mainForm extends javax.swing.JFrame {
     coreClass core = new coreClass();
     databaseCore dbCore = new databaseCore();
 
-    final int tableCount = 50;
+    final int tableCount = 40;
     int initialCount = 0;
-    int maxCount = 50;
+    int maxCount = 40;
+    int initialProfCount = 0;
+    int maxProfCount = 40;
 
     public mainForm() {
         initComponents();
@@ -70,6 +72,8 @@ public class mainForm extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -471,6 +475,11 @@ public class mainForm extends javax.swing.JFrame {
         jPanel12.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
         profileSearch.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        profileSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                profileSearchKeyReleased(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setText("Search");
@@ -541,6 +550,11 @@ public class mainForm extends javax.swing.JFrame {
 
         jButton14.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton14.setText("NEXT");
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton14ActionPerformed(evt);
+            }
+        });
 
         profileTable.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         profileTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -657,6 +671,19 @@ public class mainForm extends javax.swing.JFrame {
         jMenu2.add(jMenuItem2);
 
         jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("Account");
+
+        jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItem3.setText("Add Profile Group");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem3);
+
+        jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
 
@@ -842,6 +869,24 @@ public class mainForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_operatorSearchKeyReleased
 
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        new profileGroupForm().setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void profileSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_profileSearchKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            showProfiles();
+        }
+
+        if (operatorSearch.getText().isEmpty() || operatorSearch.getText().isBlank()) {
+            showProfiles();
+        }
+    }//GEN-LAST:event_profileSearchKeyReleased
+
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton14ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -901,9 +946,11 @@ public class mainForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -948,12 +995,14 @@ public class mainForm extends javax.swing.JFrame {
 
     private void showProfiles() {
         try {
-            String query = "SELECT ItemID AS `Item ID`, itemDescription AS `Item Description`, s.supplierName AS `Supplier`"
-                    + "FROM itemheader ih "
-                    + "JOIN supplier s "
-                    + "ON ih.supplierID = s.supplierID "
-                    + "WHERE ih.deletedOn IS NULL AND ih.deletedBy IS NULL ";
-            itemTable.setModel(DbUtils.resultSetToTableModel(dbCore.getResultSet(query)));
+            String query = "SELECT * FROM showprofiles ";
+            if (!profileSearch.getText().isBlank() || !profileSearch.getText().isEmpty()) {
+                String searchProf = profileSearch.getText();
+                query += "WHERE `Group ID` REGEXP '" + searchProf + "' OR `Group Name` REGEXP '" + searchProf + "' "
+                        + "OR `Employee ID` REGEXP '" + searchProf + "' OR `Employee Name` REGEXP '" + searchProf + "' ";
+            }
+            query += "ORDER BY `Group Name` LIMIT " + initialProfCount + ", " + maxProfCount + " ";
+            profileTable.setModel(DbUtils.resultSetToTableModel(dbCore.getResultSet(query)));
         } catch (Exception e) {
             e.printStackTrace();
         }
