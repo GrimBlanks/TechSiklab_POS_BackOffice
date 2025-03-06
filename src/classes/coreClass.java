@@ -41,7 +41,7 @@ public class coreClass {
                         + "SET deletedOn = NOW(), deletedBy = '" + accountID + "' "
                         + "WHERE supplierName = '" + suppName + "' "
                         + "AND deletedOn IS NULL";
-                dbCore.executeUpdate(query);
+                dbCore.execute(query);
             } else {
                 JOptionPane.showMessageDialog(null, "Please login before deleteing a supplier", "Warning", 1);
             }
@@ -84,40 +84,6 @@ public class coreClass {
         return this.accountID;
     }
 
-    public void addItem(String itemID,
-            String itemDescription,
-            int supplierID,
-            String accountID,
-            double unitPrice,
-            int categoryID,
-            int PWDAllowed,
-            int SeniorAllowed,
-            double sellingPrice,
-            String barcode,
-            String UOMText) {
-        try {
-            logs.setupLogger();
-            if (!accountID.isBlank() || !accountID.isEmpty()) {
-                String query = "INSERT INTO itemheader(itemID, itemDescription, supplierID, addedOn, addedBy) "
-                        + "VALUES('" + itemID + "', '" + itemDescription + "', " + supplierID + ", NOW(), '" + accountID + "'); ";
-                dbCore.execute(query);
-                query = "INSERT INTO itemdetail(itemID, unitPrice, categoryID, description, discountPWDAllowed, discountSCAllowed, unitOfMeasure) "
-                        + "VALUES('" + itemID + "', " + unitPrice + ", " + categoryID + ", '" + itemDescription + "', '" + PWDAllowed + "', '" + SeniorAllowed + "', '" + UOMText + "'); ";
-                dbCore.execute(query);
-                query = "INSERT INTO itembarcode(itemID, barcode, addedOn, addedBy) VALUES('" + itemID + "', '" + barcode + "', NOW(), '" + accountID + "'); ";
-                dbCore.execute(query);
-                query = "INSERT INTO itemprice(itemID, value, addedOn, addedBy) VALUES('" + itemID + "', '" + sellingPrice + "', NOW(), '" + accountID + "'); ";
-                dbCore.execute(query);
-            } else {
-                JOptionPane.showMessageDialog(null, "Please login before adding an item.", "Warning", 1);
-            }
-        } catch (Exception e) {
-            logging.logger.log(Level.SEVERE, "An exception occurred", e);
-        } finally {
-            logs.closeLogger();
-        }
-    }
-
     public void deleteCategory(String categoryName, String accountID) {
         try {
             logs.setupLogger();
@@ -125,7 +91,7 @@ public class coreClass {
                 String query = "UPDATE itemcategory "
                         + "SET deletedOn = NOW(), deletedBy = '" + accountID + "' "
                         + "WHERE description = '" + categoryName + "'";
-                dbCore.executeUpdate(query);
+                dbCore.execute(query);
             } else {
                 JOptionPane.showMessageDialog(null, "Please login before deleteing a supplier", "Warning", 1);
             }
@@ -196,24 +162,6 @@ public class coreClass {
             logs.closeLogger();
         }
         return res;
-    }
-
-    public void deleteItem(String itemID, String accountID) {
-        try {
-            logs.setupLogger();
-            if (!accountID.isBlank() || !accountID.isEmpty()) {
-                String query = "UPDATE itemheader "
-                        + "SET deletedOn = NOW(), deletedBy = '" + accountID + "' "
-                        + "WHERE itemID = '" + itemID + "'";
-                dbCore.executeUpdate(query);
-            } else {
-                JOptionPane.showMessageDialog(null, "Please login before deleteing an item", "Warning", 1);
-            }
-        } catch (Exception e) {
-            logs.logger.log(Level.SEVERE, "An exception occurred", e);
-        } finally {
-            logs.closeLogger();
-        }
     }
 
     public void addAccount(String empID, String firstName, String middleName, String lastName,
@@ -294,7 +242,7 @@ public class coreClass {
                         + "SET deletedOn = NOW(), deletedBy = '" + accountID + "' "
                         + "WHERE description = '" + groupName + "' "
                         + "AND deletedOn IS NULL";
-                dbCore.executeUpdate(query);
+                dbCore.execute(query);
             } else {
                 JOptionPane.showMessageDialog(null, "Please login before deleteing a group", "Warning", 1);
             }
@@ -328,10 +276,9 @@ public class coreClass {
             if (rs.next()) {
                 profileID = Integer.parseInt(rs.getString("Auto_ID"));
             }
-
             query = "INSERT INTO profileprotocol(profileProtocolID ,profileID, discountOverride, abortReceipt, totalDiscount, voidReceipt, reprintReceipt, lineVoid, priceOverride) "
                     + "VALUES (" + groupID + "," + profileID + ", " + discountOverrideFlag + "," + abortReceiptFlag + "," + totalDiscountFlag + "," + voidReceiptFlag + "," + reprintReceiptFlag + "," + lineVoidFlag + "," + priceOverrideFlag + ")";
-            dbCore.executeUpdate(query);
+            dbCore.execute(query);
 
         } catch (Exception e) {
             logging.logger.log(Level.SEVERE, "An exception occurred", e);

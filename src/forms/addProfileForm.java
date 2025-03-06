@@ -47,6 +47,7 @@ public class addProfileForm extends javax.swing.JFrame {
         lineVoid = new UI.JCheckBoxCustom();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Assign Profile Group");
         setResizable(false);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {

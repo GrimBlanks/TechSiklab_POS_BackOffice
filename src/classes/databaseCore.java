@@ -50,15 +50,4 @@ public class databaseCore {
             logs.closeLogger();
         }
     }
-
-    public void executeUpdate(String query) {
-        try {
-            connect();
-            st.executeUpdate(query);
-        } catch (SQLException e) {
-            logs.logger.log(java.util.logging.Level.SEVERE, "An exception occurred", e);
-        } finally {
-            logs.closeLogger();
-        }
-    }
 }

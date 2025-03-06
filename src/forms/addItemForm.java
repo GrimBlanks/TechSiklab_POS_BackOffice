@@ -2,6 +2,7 @@ package forms;
 
 import classes.coreClass;
 import classes.databaseCore;
+import classes.itemClass;
 import classes.logging;
 import java.util.logging.Level;
 import java.sql.*;
@@ -15,6 +16,7 @@ public class addItemForm extends javax.swing.JFrame {
     logging logs = new logging();
     databaseCore dbCore = new databaseCore();
     coreClass core = new coreClass();
+    itemClass classItem = new itemClass();
 
     public addItemForm() {
         initComponents();
@@ -48,23 +50,17 @@ public class addItemForm extends javax.swing.JFrame {
         enableUOM = new javax.swing.JCheckBox();
         allowPWD = new javax.swing.JCheckBox();
         allowSenior = new javax.swing.JCheckBox();
-        jSeparator1 = new javax.swing.JSeparator();
         jLabel14 = new javax.swing.JLabel();
         itemID = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        itemBarcode = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         sellingPrice = new javax.swing.JTextField();
-        jLabel13 = new javax.swing.JLabel();
-        jSeparator2 = new javax.swing.JSeparator();
+        jButton1 = new javax.swing.JButton();
         addBtn = new javax.swing.JButton();
-        closeBtn = new javax.swing.JButton();
         saveBtn = new javax.swing.JButton();
         clearBtn = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        closeBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -77,7 +73,7 @@ public class addItemForm extends javax.swing.JFrame {
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(183, 232, 236));
+        jPanel1.setBackground(new java.awt.Color(132, 203, 239));
         jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
@@ -147,131 +143,23 @@ public class addItemForm extends javax.swing.JFrame {
         jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel15.setText("Options");
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jSeparator3)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(suppList, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel1)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(categoryList, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel10))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(unitPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(enableUOM))
-                            .addComponent(UOMText)))
-                    .addComponent(itemID, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(itemDesc, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(allowPWD)
-                            .addComponent(allowSenior)
-                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(itemID, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(itemDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(enableUOM, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(UOMText, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(suppList, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(categoryList, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(unitPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(9, 9, 9)
-                .addComponent(allowPWD, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(allowSenior, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(126, Short.MAX_VALUE))
-        );
-
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
-
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel7.setText("Item Barcode");
-
-        itemBarcode.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel8.setText("Selling Price");
 
         sellingPrice.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
-        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel13.setText("Additional Information");
+        jButton1.setText("See Barcodes");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         addBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         addBtn.setText("ADD ITEM");
         addBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addBtnActionPerformed(evt);
-            }
-        });
-
-        closeBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        closeBtn.setText("CLOSE");
-        closeBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                closeBtnActionPerformed(evt);
             }
         });
 
@@ -291,59 +179,123 @@ public class addItemForm extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("See Barcodes");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        closeBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        closeBtn.setText("CLOSE");
+        closeBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                closeBtnActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(itemBarcode)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(suppList, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel1)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(categoryList, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel10))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(unitPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(enableUOM))
+                            .addComponent(UOMText)))
+                    .addComponent(itemID)
+                    .addComponent(itemDesc)
+                    .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(sellingPrice, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
+                            .addComponent(jButton1)
+                            .addComponent(allowPWD)
+                            .addComponent(allowSenior)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(saveBtn)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(clearBtn)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(closeBtn))
-                            .addComponent(jButton1))
-                        .addGap(0, 30, Short.MAX_VALUE)))
+                                .addComponent(closeBtn)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(itemID, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(itemDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(suppList, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(categoryList, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(itemBarcode, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(enableUOM, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(UOMText, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(unitPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(sellingPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(allowPWD, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(allowSenior, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(closeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -360,8 +312,7 @@ public class addItemForm extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -371,9 +322,7 @@ public class addItemForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -400,7 +349,6 @@ public class addItemForm extends javax.swing.JFrame {
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
         try {
             String itemIDs = itemID.getText().trim();
-            String itemBar = itemBarcode.getText().trim();
             String itemDescription = itemDesc.getText().trim();
             double initialPrice = Double.parseDouble(unitPrice.getText().trim());
             double sellPrice = Double.parseDouble(sellingPrice.getText().trim());
@@ -416,8 +364,8 @@ public class addItemForm extends javax.swing.JFrame {
             } else if (suppList.getSelectedIndex() == 0) {
                 JOptionPane.showMessageDialog(null, "Supplier cannot be empty.", "Warning", 1);
             } else {
-                catID = getCategoryID(categoryList.getSelectedItem().toString());
-                suppID = getSuppID(suppList.getSelectedItem().toString());
+                catID = classItem.getCategoryID(categoryList.getSelectedItem().toString());
+                suppID = classItem.getSuppID(suppList.getSelectedItem().toString());
                 isInsertReady = true;
             }
 
@@ -430,8 +378,8 @@ public class addItemForm extends javax.swing.JFrame {
             }
 
             if (isInsertReady) {
-                core.addItem(itemIDs, itemDescription, suppID, core.getAccountID(), initialPrice,
-                        catID, pwd, scd, sellPrice, itemBar, UOMDesc);
+                classItem.addItem(itemIDs, itemDescription, suppID, core.getAccountID(), initialPrice,
+                        catID, pwd, scd, sellPrice, UOMDesc);
                 dispose();
             }
         } catch (NumberFormatException nfe) {
@@ -464,13 +412,45 @@ public class addItemForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel10MouseClicked
 
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
-        // TODO add your handling code here:
+        int option = JOptionPane.showConfirmDialog(null, "Save changes?", "Update Warning", 0);
+        if (option == 0) {
+            String UOMDesc;
+            int PWD = 0;
+            int SC = 0;
+
+            if (enableUOM.isSelected()) {
+                System.out.println("True");
+                UOMDesc = UOMText.getText();
+            } else {
+                UOMDesc = "None";
+            }
+
+            if (allowPWD.isSelected()) {
+                PWD = 1;
+            }
+
+            if (allowSenior.isSelected()) {
+                SC = 1;
+            }
+
+            try {
+                logs.setupLogger();
+                classItem.updateItemDetails(itemID.getText().trim(), itemDesc.getText().trim(), suppList.getSelectedItem().toString(),
+                        categoryList.getSelectedItem().toString(), UOMDesc,
+                        PWD, SC, Double.parseDouble(sellingPrice.getText().trim()));
+            } catch (Exception e) {
+                logs.logger.log(Level.SEVERE, "An exception occurred", e);
+            } finally {
+                logs.closeLogger();
+            }
+            dispose();
+        }
     }//GEN-LAST:event_saveBtnActionPerformed
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         getSuppCatList();
         if (compHide.equalsIgnoreCase("Edit") && (!itemIDText.isBlank() || !itemIDText.isEmpty())) {
-            getAllItemDetails(itemIDText.trim());
+            classItem.getAllItemDetails(itemIDText.trim());
         }
     }//GEN-LAST:event_formWindowGainedFocus
 
@@ -514,50 +494,46 @@ public class addItemForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField UOMText;
+    private static javax.swing.JTextField UOMText;
     private javax.swing.JButton addBtn;
-    private javax.swing.JCheckBox allowPWD;
-    private javax.swing.JCheckBox allowSenior;
-    private javax.swing.JComboBox<String> categoryList;
+    private static javax.swing.JCheckBox allowPWD;
+    private static javax.swing.JCheckBox allowSenior;
+    private static javax.swing.JComboBox<String> categoryList;
     private javax.swing.JButton clearBtn;
     private javax.swing.JButton closeBtn;
-    private javax.swing.JCheckBox enableUOM;
-    private javax.swing.JTextField itemBarcode;
-    private javax.swing.JTextField itemDesc;
-    private javax.swing.JTextField itemID;
+    private static javax.swing.JCheckBox enableUOM;
+    private static javax.swing.JTextField itemDesc;
+    private static javax.swing.JTextField itemID;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JButton saveBtn;
-    private javax.swing.JTextField sellingPrice;
-    private javax.swing.JComboBox<String> suppList;
-    private javax.swing.JTextField unitPrice;
+    private static javax.swing.JTextField sellingPrice;
+    private static javax.swing.JComboBox<String> suppList;
+    private static javax.swing.JTextField unitPrice;
     // End of variables declaration//GEN-END:variables
 
     private void UOMEnable(Boolean bool) {
         if (bool) {
             enableUOM.setSelected(true);
             UOMText.enable();
+            UOMText.setText("");
             UOMText.updateUI();
         } else {
             enableUOM.setSelected(false);
+            UOMText.setText("");
             UOMText.disable();
             UOMText.updateUI();
         }
@@ -568,6 +544,9 @@ public class addItemForm extends javax.swing.JFrame {
             saveBtn.setVisible(false);
         } else if (compHide.equalsIgnoreCase("Edit")) {
             addBtn.setVisible(false);
+            clearBtn.setVisible(false);
+            unitPrice.disable();
+            itemID.disable();
         }
 
         if (itemUOM) {
@@ -582,7 +561,6 @@ public class addItemForm extends javax.swing.JFrame {
     private void clearText() {
         itemID.setText("");
         itemDesc.setText("");
-        itemBarcode.setText("");
         sellingPrice.setText("");
         unitPrice.setText("");
         UOMText.setText("");
@@ -640,53 +618,7 @@ public class addItemForm extends javax.swing.JFrame {
         getCategoryList();
     }
 
-    private void getAllItemDetails(String itemID) {
-        try {
-            ResultSet rs;
-            logs.setupLogger();
-            String query = "SELECT "
-                    + "    ih.itemID AS `ItemID`, "
-                    + "    ih.itemDescription AS `itemDescription`, "
-                    + "    s.supplierName AS `supplierName`, "
-                    + "    id.unitPrice AS `unitPrice`, "
-                    + "    ic.description AS `categoryName`, "
-                    + "    id.discountPWDAllowed AS `discountPWDAllowed`, "
-                    + "    id.discountSCAllowed AS `discountSCAllowed`, "
-                    + "    IFNULL(ip.value, '') AS `ItemPrice`, "
-                    + "    IFNULL(id.unitOfMeasure, '') AS `UOM`, "
-                    + "    (SELECT ib.barcode "
-                    + "     FROM itembarcode ib "
-                    + "     WHERE ib.itemID = ih.itemID "
-                    + "     ORDER BY ib.Auto_ID DESC "
-                    + "     LIMIT 1) AS `barcode` "
-                    + "FROM itemheader ih "
-                    + "JOIN itemdetail id ON ih.itemID = id.itemID "
-                    + "JOIN itemcategory ic ON id.categoryID = ic.categoryID "
-                    + "JOIN supplier s ON s.supplierID = ih.supplierID "
-                    + "LEFT JOIN itemprice ip ON ih.itemID = ip.itemID "
-                    + "WHERE ih.deletedOn IS NULL ";
-            rs = dbCore.getResultSet(query);
-            if (rs.next()) {
-                String itemDescription = rs.getString("itemDescription");
-                String supplierName = rs.getString("supplierName");
-                String unitPrices = rs.getString("unitPrice");
-                String categoryName = rs.getString("categoryName");
-                String PWDAllowed = rs.getString("discountPWDAllowed");
-                String SeniorAllowed = rs.getString("discountSCAllowed");
-                String sellingPrices = rs.getString("ItemPrice");
-                String barcode = rs.getString("barcode");
-                String UnitOfMeasure = rs.getString("UOM");
-                setItemDetails(itemID, itemDescription, supplierName, unitPrices, categoryName,
-                        PWDAllowed, SeniorAllowed, sellingPrices, barcode, UnitOfMeasure);
-            }
-        } catch (Exception e) {
-            logs.logger.log(Level.SEVERE, "An exception occurred", e);
-        } finally {
-            logs.closeLogger();
-        }
-    }
-
-    private void setItemDetails(String itemIDs,
+    public static void setItemDetails(String itemIDs,
             String itemDescription,
             Object supplierName,
             String unitPrices,
@@ -694,11 +626,9 @@ public class addItemForm extends javax.swing.JFrame {
             String PWDAllowed,
             String SeniorAllowed,
             String sellingPrices,
-            String barcode,
             String UOMTexts) {
         itemID.setText(itemIDs);
         itemDesc.setText(itemDescription);
-        itemBarcode.setText(barcode);
         sellingPrice.setText(sellingPrices);
         unitPrice.setText(unitPrices);
         suppList.setSelectedItem(supplierName);
@@ -711,82 +641,12 @@ public class addItemForm extends javax.swing.JFrame {
             allowSenior.setSelected(true);
         }
 
-        if (!UOMTexts.isBlank() || !UOMTexts.isEmpty()) {
+        if (UOMTexts.isBlank() || UOMTexts.isEmpty()) {
+            enableUOM.setSelected(false);
+            UOMText.setText("");
+        } else {
             enableUOM.setSelected(true);
             UOMText.setText(UOMTexts);
-        } else {
-            UOMText.setText("");
         }
-    }
-
-    private String getItemDesc(String itemID) {
-        String itemDesc = "";
-
-        try {
-            ResultSet rs;
-            logs.setupLogger();
-            String query = "SELECT description "
-                    + "FROM itemcategory "
-                    + "WHERE deletedOn IS NULL ";
-            rs = dbCore.getResultSet(query);
-            categoryList.removeAllItems();
-            categoryList.addItem("");
-            while (rs.next()) {
-                categoryList.addItem(rs.getString("description"));
-            }
-            categoryList.updateUI();
-        } catch (Exception e) {
-            logs.logger.log(Level.SEVERE, "An exception occurred", e);
-        } finally {
-            logs.closeLogger();
-        }
-
-        return itemDesc;
-    }
-
-    private int getCategoryID(String description) {
-        int catID = 0;
-
-        try {
-            ResultSet rs;
-            logs.setupLogger();
-            String query = "SELECT * "
-                    + "FROM itemcategory "
-                    + "WHERE description = '" + description + "' "
-                    + "AND deletedOn IS NULL";
-            rs = dbCore.getResultSet(query);
-            if (rs.next()) {
-                catID = Integer.parseInt(rs.getString("categoryID"));
-            }
-        } catch (Exception e) {
-            logs.logger.log(Level.SEVERE, "An exception occurred", e);
-        } finally {
-            logs.closeLogger();
-        }
-
-        return catID;
-    }
-
-    private int getSuppID(String description) {
-        int suppID = 0;
-
-        try {
-            ResultSet rs;
-            logs.setupLogger();
-            String query = "SELECT supplierID "
-                    + "FROM supplier "
-                    + "WHERE supplierName = '" + description + "' "
-                    + "AND deletedOn IS NULL";
-            rs = dbCore.getResultSet(query);
-            if (rs.next()) {
-                suppID = Integer.parseInt(rs.getString("supplierID"));
-            }
-        } catch (Exception e) {
-            logs.logger.log(Level.SEVERE, "An exception occurred", e);
-        } finally {
-            logs.closeLogger();
-        }
-
-        return suppID;
     }
 }

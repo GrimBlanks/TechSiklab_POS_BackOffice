@@ -45,6 +45,7 @@ public class profileGroupForm extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Profile Group Form");
         setResizable(false);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
@@ -182,7 +183,7 @@ public class profileGroupForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        String groupName = JOptionPane.showInputDialog(null, "Input supplier name");
+        String groupName = JOptionPane.showInputDialog(null, "Input profile group description");
         if (groupName != null) {
             core.insertGroupName(groupName.trim(), core.getAccountID());
         }

@@ -63,6 +63,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="0"/>
+    <Property name="title" type="java.lang.String" value="Back Office"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="jMenuBar1"/>
@@ -70,6 +71,7 @@
     <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
   </SyntheticProperties>
   <Events>
+    <EventHandler event="windowGainedFocus" listener="java.awt.event.WindowFocusListener" parameters="java.awt.event.WindowEvent" handler="formWindowGainedFocus"/>
     <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowClosing"/>
   </Events>
   <AuxValues>
@@ -166,7 +168,7 @@
                               <Component id="jLabel1" min="-2" pref="96" max="-2" attributes="0"/>
                               <Component id="itemSearch" min="-2" pref="200" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="628" max="32767" attributes="0"/>
+                          <EmptySpace pref="643" max="32767" attributes="0"/>
                           <Component id="jButton3" min="-2" pref="75" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="jButton2" min="-2" pref="75" max="-2" attributes="0"/>
@@ -393,28 +395,6 @@
             </Container>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="jPanel2">
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Price History">
-                <Property name="tabTitle" type="java.lang.String" value="Price History"/>
-              </JTabbedPaneConstraints>
-            </Constraint>
-          </Constraints>
-
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="1115" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="697" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-          </Layout>
-        </Container>
         <Container class="javax.swing.JPanel" name="jPanel3">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
@@ -427,29 +407,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="1115" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="697" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-          </Layout>
-        </Container>
-        <Container class="javax.swing.JPanel" name="jPanel4">
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Promotion Manager">
-                <Property name="tabTitle" type="java.lang.String" value="Promotion Manager"/>
-              </JTabbedPaneConstraints>
-            </Constraint>
-          </Constraints>
-
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="1115" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="1130" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -541,7 +499,7 @@
                                       <Component id="jLabel3" alignment="0" min="-2" pref="96" max="-2" attributes="0"/>
                                       <Component id="operatorSearch" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace pref="628" max="32767" attributes="0"/>
+                                  <EmptySpace pref="643" max="32767" attributes="0"/>
                                   <Component id="jButton8" min="-2" pref="75" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="jButton7" min="-2" pref="75" max="-2" attributes="0"/>
@@ -821,7 +779,7 @@
                                       <Component id="jLabel4" alignment="0" min="-2" pref="96" max="-2" attributes="0"/>
                                       <Component id="profileSearch" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace pref="628" max="32767" attributes="0"/>
+                                  <EmptySpace pref="643" max="32767" attributes="0"/>
                                   <Component id="jButton13" min="-2" pref="75" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="jButton12" min="-2" pref="75" max="-2" attributes="0"/>

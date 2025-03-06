@@ -3,9 +3,7 @@ package forms;
 import classes.coreClass;
 import classes.databaseCore;
 import classes.logging;
-import java.io.IOException;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
@@ -17,8 +15,8 @@ public class supplierForm extends javax.swing.JFrame {
     logging logs = new logging();
     databaseCore dbCore = new databaseCore();
     private int initialNum = 0;
-    private int maxNum = 40;
-    private final int addedNum = 40;
+    private int maxNum = 10;
+    private final int addedNum = 10;
 
     public supplierForm() {
         initComponents();
@@ -45,6 +43,7 @@ public class supplierForm extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Supplier Form");
         setResizable(false);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
@@ -197,7 +196,7 @@ public class supplierForm extends javax.swing.JFrame {
     }//GEN-LAST:event_suppTableKeyReleased
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if (getSupplierCount() > 40) {
+        if (suppTable.getRowCount() == 10) {
             initialNum += addedNum;
             maxNum += addedNum;
             showSuppliers(searchBar.getText(), initialNum, maxNum);
@@ -205,7 +204,7 @@ public class supplierForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (maxNum > 40) {
+        if (maxNum > 10) {
             initialNum -= addedNum;
             maxNum -= addedNum;
             showSuppliers(searchBar.getText(), initialNum, maxNum);
@@ -309,24 +308,5 @@ public class supplierForm extends javax.swing.JFrame {
         } finally {
             logs.closeLogger();
         }
-    }
-
-    private int getSupplierCount() {
-        int count = 0;
-        try {
-            logs.setupLogger();
-            String query = "SELECT COUNT(*) AS `Counts` FROM supplier WHERE deletedOn IS NULL";
-            rs = dbCore.getResultSet(query);
-            if (rs.next()) {
-                count = Integer.parseInt(rs.getString("Counts"));
-            }
-            rs.close();
-            dbCore.closeConnection();
-        } catch (IOException | SQLException e) {
-            logs.logger.log(Level.SEVERE, "An exception occurred", e);
-        } finally {
-            logs.closeLogger();
-        }
-        return count;
     }
 }

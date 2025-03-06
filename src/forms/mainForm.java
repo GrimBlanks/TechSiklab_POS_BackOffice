@@ -2,6 +2,7 @@ package forms;
 
 import classes.coreClass;
 import classes.databaseCore;
+import classes.itemClass;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
@@ -10,6 +11,7 @@ public class mainForm extends javax.swing.JFrame {
 
     coreClass core = new coreClass();
     databaseCore dbCore = new databaseCore();
+    itemClass classItem = new itemClass();
 
     final int tableCount = 40;
     int initialCount = 0;
@@ -38,9 +40,7 @@ public class mainForm extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         itemTable = new javax.swing.JTable();
         jButton4 = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         accountsTab = new javax.swing.JTabbedPane();
         jPanel8 = new javax.swing.JPanel();
@@ -76,6 +76,14 @@ public class mainForm extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Back Office");
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -142,7 +150,7 @@ public class mainForm extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(itemSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 628, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 643, Short.MAX_VALUE)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -252,24 +260,11 @@ public class mainForm extends javax.swing.JFrame {
 
         tabPane.addTab("Item Manager", jPanel1);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1115, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 697, Short.MAX_VALUE)
-        );
-
-        tabPane.addTab("Price History", jPanel2);
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1115, Short.MAX_VALUE)
+            .addGap(0, 1130, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -277,19 +272,6 @@ public class mainForm extends javax.swing.JFrame {
         );
 
         tabPane.addTab("Discount Manager", jPanel3);
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1115, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 697, Short.MAX_VALUE)
-        );
-
-        tabPane.addTab("Promotion Manager", jPanel4);
 
         accountsTab.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -348,7 +330,7 @@ public class mainForm extends javax.swing.JFrame {
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(operatorSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 628, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 643, Short.MAX_VALUE)
                 .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -523,7 +505,7 @@ public class mainForm extends javax.swing.JFrame {
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(profileSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 628, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 643, Short.MAX_VALUE)
                 .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -720,6 +702,16 @@ public class mainForm extends javax.swing.JFrame {
         new supplierForm().setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        new profileGroupForm().setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        showItems();
+        showProfiles();
+        showOperators();
+    }//GEN-LAST:event_formWindowGainedFocus
+
     private void tabPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabPaneStateChanged
         if (tabPane.getSelectedIndex() == 0) {
             showItems();
@@ -735,65 +727,6 @@ public class mainForm extends javax.swing.JFrame {
             showProfiles();
         }
     }//GEN-LAST:event_tabPaneStateChanged
-
-    private void itemTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_itemTableKeyReleased
-        itemTable.removeEditor();
-    }//GEN-LAST:event_itemTableKeyReleased
-
-    private void itemTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemTableMousePressed
-        itemTable.removeEditor();
-    }//GEN-LAST:event_itemTableMousePressed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        addItemForm.compHide = "Add";
-        new addItemForm().setVisible(true);
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try {
-            int col = 0;
-            int row = itemTable.getSelectedRow();
-            String val = itemTable.getValueAt(row, col).toString();
-            addItemForm.itemIDText = val;
-            addItemForm.compHide = "Edit";
-            new addItemForm().setVisible(true);
-        } catch (ArrayIndexOutOfBoundsException ai) {
-            JOptionPane.showMessageDialog(null, "Please select an item to view details.", "Warning", 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            int option = JOptionPane.showConfirmDialog(null, "Delete selected item?", "Warning", 0);
-            if (option == 0) {
-                int col = 0;
-                int row = itemTable.getSelectedRow();
-                String val = itemTable.getValueAt(row, col).toString();
-                core.deleteItem(val, core.getAccountID());
-            }
-            showItems();
-        } catch (ArrayIndexOutOfBoundsException ai) {
-            JOptionPane.showMessageDialog(null, "Please select an item to view details.", "Warning", 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void itemSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_itemSearchKeyReleased
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            showItems();
-        }
-
-        if (itemSearch.getText().isEmpty() || itemSearch.getText().isBlank()) {
-            showItems();
-        }
-    }//GEN-LAST:event_itemSearchKeyReleased
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
 
     private void accountsTabStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_accountsTabStateChanged
         if (accountsTab.getSelectedIndex() == 0 && tabPane.getSelectedIndex() == 4) {
@@ -811,6 +744,10 @@ public class mainForm extends javax.swing.JFrame {
         profileTable.removeEditor();
     }//GEN-LAST:event_profileTableMousePressed
 
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton14ActionPerformed
+
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
         new addProfileForm().setVisible(true);
     }//GEN-LAST:event_jButton13ActionPerformed
@@ -822,6 +759,16 @@ public class mainForm extends javax.swing.JFrame {
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void profileSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_profileSearchKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            showProfiles();
+        }
+
+        if (operatorSearch.getText().isEmpty() || operatorSearch.getText().isBlank()) {
+            showProfiles();
+        }
+    }//GEN-LAST:event_profileSearchKeyReleased
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         if (initialCount >= 50) {
@@ -869,23 +816,64 @@ public class mainForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_operatorSearchKeyReleased
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        new profileGroupForm().setVisible(true);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
-
-    private void profileSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_profileSearchKeyReleased
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            showProfiles();
-        }
-
-        if (operatorSearch.getText().isEmpty() || operatorSearch.getText().isBlank()) {
-            showProfiles();
-        }
-    }//GEN-LAST:event_profileSearchKeyReleased
-
-    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton14ActionPerformed
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void itemTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_itemTableKeyReleased
+        itemTable.removeEditor();
+    }//GEN-LAST:event_itemTableKeyReleased
+
+    private void itemTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemTableMousePressed
+        itemTable.removeEditor();
+    }//GEN-LAST:event_itemTableMousePressed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        addItemForm.compHide = "Add";
+        new addItemForm().setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            int col = 0;
+            int row = itemTable.getSelectedRow();
+            String val = itemTable.getValueAt(row, col).toString();
+            addItemForm.itemIDText = val;
+            addItemForm.compHide = "Edit";
+            new addItemForm().setVisible(true);
+        } catch (ArrayIndexOutOfBoundsException ai) {
+            JOptionPane.showMessageDialog(null, "Please select an item to view details.", "Warning", 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            int option = JOptionPane.showConfirmDialog(null, "Delete selected item?", "Warning", 0);
+            if (option == 0) {
+                int col = 0;
+                int row = itemTable.getSelectedRow();
+                String val = itemTable.getValueAt(row, col).toString();
+                classItem.deleteItem(val, core.getAccountID());
+            }
+            showItems();
+        } catch (ArrayIndexOutOfBoundsException ai) {
+            JOptionPane.showMessageDialog(null, "Please select an item to view details.", "Warning", 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void itemSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_itemSearchKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            showItems();
+        }
+
+        if (itemSearch.getText().isEmpty() || itemSearch.getText().isBlank()) {
+            showItems();
+        }
+    }//GEN-LAST:event_itemSearchKeyReleased
 
     /**
      * @param args the command line arguments
@@ -924,7 +912,7 @@ public class mainForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane accountsTab;
-    public static javax.swing.JTextField itemSearch;
+    private javax.swing.JTextField itemSearch;
     private javax.swing.JTable itemTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
@@ -956,9 +944,7 @@ public class mainForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
@@ -1024,5 +1010,4 @@ public class mainForm extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-
 }

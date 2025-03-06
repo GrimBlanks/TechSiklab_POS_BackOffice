@@ -28,6 +28,7 @@ public class loginForm extends javax.swing.JFrame {
         button2 = new UI.Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Login Form");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(71, 149, 229));
