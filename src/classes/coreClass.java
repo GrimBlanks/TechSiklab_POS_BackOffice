@@ -20,7 +20,7 @@ public class coreClass {
                 if (isSupplierExisting(suppName)) {
                     JOptionPane.showMessageDialog(null, "Supplier existing. Try again.");
                 } else {
-                    String query = "INSERT INTO supplier(supplierName,  addedOn, addedBy) VALUES('" + suppName + "', NOW(), '" + accountID + "')";
+                    String query = "INSERT INTO itemsupplier(supplierName,  addedOn, addedBy) VALUES('" + suppName + "', NOW(), '" + accountID + "')";
                     dbCore.execute(query);
                 }
             } else {
@@ -37,7 +37,7 @@ public class coreClass {
         try {
             logs.setupLogger();
             if (!accountID.isBlank() || !accountID.isEmpty()) {
-                String query = "UPDATE supplier "
+                String query = "UPDATE itemsupplier "
                         + "SET deletedOn = NOW(), deletedBy = '" + accountID + "' "
                         + "WHERE supplierName = '" + suppName + "' "
                         + "AND deletedOn IS NULL";
@@ -109,8 +109,12 @@ public class coreClass {
                 if (isCategoryExisting(categoryName)) {
                     JOptionPane.showMessageDialog(null, "Category existing. Try again.");
                 } else {
-                    String query = "INSERT INTO itemcategory(description,  addedOn, addedBy) VALUES('" + categoryName + "', NOW(), '" + accountID + "')";
-                    dbCore.execute(query);
+                    String query = "SELECT COUNT(*) AS 'Category_Count' FROM itemcategory";
+                    rs = dbCore.getResultSet(query);
+                    if (rs.next()) {
+                        String insertQuery = "INSERT INTO itemcategory(categoryID, description,  addedOn, addedBy) VALUES("+Integer.parseInt(rs.getString("Category_Count"))+",'" + categoryName + "', NOW(), '" + accountID + "')";
+                        dbCore.execute(insertQuery);
+                    }
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Please login before adding a supplier", "Warning", 1);
@@ -148,7 +152,7 @@ public class coreClass {
         try {
             logs.setupLogger();
             String query = "SELECT * "
-                    + "FROM supplier "
+                    + "FROM itemsupplier "
                     + "WHERE supplierName = '" + supplierName + "' "
                     + "AND deletedOn IS NULL ";
             rs = dbCore.getResultSet(query);

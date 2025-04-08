@@ -576,7 +576,7 @@ public class addItemForm extends javax.swing.JFrame {
             ResultSet rs;
             logs.setupLogger();
             String query = "SELECT supplierName "
-                    + "FROM supplier "
+                    + "FROM itemsupplier "
                     + "WHERE deletedOn IS NULL AND deletedBy IS NULL";
             rs = dbCore.getResultSet(query);
             suppList.removeAllItems();

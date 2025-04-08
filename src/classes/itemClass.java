@@ -93,13 +93,13 @@ public class itemClass {
         try {
             ResultSet rs;
             logs.setupLogger();
-            String query = "SELECT supplierID "
-                    + "FROM supplier "
+            String query = "SELECT Auto_ID "
+                    + "FROM itemsupplier "
                     + "WHERE supplierName = '" + description + "' "
                     + "AND deletedOn IS NULL";
             rs = dbCore.getResultSet(query);
             if (rs.next()) {
-                suppID = Integer.parseInt(rs.getString("supplierID"));
+                suppID = Integer.parseInt(rs.getString("Auto_ID"));
             }
         } catch (Exception e) {
             logs.logger.log(Level.SEVERE, "An exception occurred", e);
@@ -147,7 +147,7 @@ public class itemClass {
                     + "FROM itemheader ih "
                     + "JOIN itemdetail id ON ih.itemID = id.itemID "
                     + "JOIN itemcategory ic ON id.categoryID = ic.categoryID "
-                    + "JOIN supplier s ON s.supplierID = ih.supplierID "
+                    + "JOIN itemsupplier s ON s.Auto_ID = ih.supplierID "
                     + "LEFT JOIN itemprice ip ON ih.itemID = ip.itemID "
                     + "WHERE ih.deletedOn IS NULL "
                     + "AND ih.itemID = '" + itemID + "'";

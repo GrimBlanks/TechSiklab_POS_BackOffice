@@ -965,8 +965,8 @@ public class mainForm extends javax.swing.JFrame {
             try {
                 String query = "SELECT ItemID AS `Item ID`, itemDescription AS `Item Description`, s.supplierName AS `Supplier`"
                         + "FROM itemheader ih "
-                        + "JOIN supplier s "
-                        + "ON ih.supplierID = s.supplierID "
+                        + "JOIN itemsupplier s "
+                        + "ON ih.supplierID = s.Auto_ID "
                         + "WHERE ih.deletedOn IS NULL AND ih.deletedBy IS NULL ";
                 if (!itemSearch.getText().isBlank() || !itemSearch.getText().isEmpty()) {
                     query += "AND (itemID REGEXP '" + itemSearch.getText() + "' OR itemDescription REGEXP '" + itemSearch.getText() + "' "

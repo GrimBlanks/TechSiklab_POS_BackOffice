@@ -292,7 +292,7 @@ public class supplierForm extends javax.swing.JFrame {
         try {
             logs.setupLogger();
             String query = "SELECT supplierName AS `Supplier Name` "
-                    + "FROM supplier ";
+                    + "FROM itemsupplier ";
             if (suppName != null && (!suppName.isBlank() || !suppName.isEmpty())) {
                 query += "WHERE supplierName REGEXP '" + suppName + "' "
                         + "AND deletedOn IS NULL "
