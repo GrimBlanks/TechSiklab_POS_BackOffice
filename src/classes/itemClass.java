@@ -27,8 +27,8 @@ public class itemClass {
                 String query = "INSERT INTO itemheader(itemID, itemDescription, supplierID, addedOn, addedBy) "
                         + "VALUES('" + itemID + "', '" + itemDescription + "', " + supplierID + ", NOW(), '" + accountID + "'); ";
                 dbCore.execute(query);
-                query = "INSERT INTO itemdetail(itemID, unitPrice, categoryID, description, discountPWDAllowed, discountSCAllowed, unitOfMeasure) "
-                        + "VALUES('" + itemID + "', " + unitPrice + ", " + categoryID + ", '" + itemDescription + "', '" + PWDAllowed + "', '" + SeniorAllowed + "', '" + UOMText + "'); ";
+                query = "INSERT INTO itemdetail(itemID, unitPrice, categoryID, description, discountPWDAllowed, discountSCAllowed, unitOfMeasure, addedOn, addedBy) "
+                        + "VALUES('" + itemID + "', " + unitPrice + ", " + categoryID + ", '" + itemDescription + "', '" + PWDAllowed + "', '" + SeniorAllowed + "', '" + UOMText + "', NOW(), '" + accountID + "'); ";
                 dbCore.execute(query);
                 query = "INSERT INTO itemprice(itemID, value, addedOn, addedBy) VALUES('" + itemID + "', '" + sellingPrice + "', NOW(), '" + accountID + "'); ";
                 dbCore.execute(query);
@@ -73,7 +73,7 @@ public class itemClass {
                     + "updatedOn = NOW(), updatedBy = '" + core.getAccountID() + "'";
             if (!UOM.equalsIgnoreCase("none")) {
                 query += ", unitOfMeasure = '" + UOM + "' ";
-            }else{
+            } else {
                 query += ", unitOfMeasure = ' ' ";
             }
             query += "WHERE itemID = '" + ItemID + "'";

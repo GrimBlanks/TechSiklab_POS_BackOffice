@@ -112,7 +112,7 @@ public class coreClass {
                     String query = "SELECT COUNT(*) AS 'Category_Count' FROM itemcategory";
                     rs = dbCore.getResultSet(query);
                     if (rs.next()) {
-                        String insertQuery = "INSERT INTO itemcategory(categoryID, description,  addedOn, addedBy) VALUES("+Integer.parseInt(rs.getString("Category_Count"))+",'" + categoryName + "', NOW(), '" + accountID + "')";
+                        String insertQuery = "INSERT INTO itemcategory(categoryID, description,  addedOn, addedBy) VALUES(" + Integer.parseInt(rs.getString("Category_Count")) + ",'" + categoryName + "', NOW(), '" + accountID + "')";
                         dbCore.execute(insertQuery);
                     }
                 }
@@ -172,8 +172,8 @@ public class coreClass {
             String userName, String passWord, String accountUntil) {
         try {
             logs.setupLogger();
-            String query = "INSERT INTO employees(employeeID, firstName, middleName, lastName) "
-                    + "VALUES ('" + empID + "', '" + firstName + "', '" + middleName + "', '" + lastName + "')";
+            String query = "INSERT INTO employees(employeeID, firstName, middleName, lastName, addedOn, addedBy) "
+                    + "VALUES ('" + empID + "', '" + firstName + "', '" + middleName + "', '" + lastName + "', NOW(), '" + getAccountID() + "')";
             if (middleName.isBlank() || middleName.isEmpty()) {
                 query = "INSERT INTO employees(employeeID, firstName, lastName) "
                         + "VALUES ('" + empID + "', '" + firstName + "', '" + lastName + "')";
@@ -183,16 +183,15 @@ public class coreClass {
             config conf = new config();
             coreClass core = new coreClass();
             query = "INSERT INTO accountheader(accountID, employeeID, storeID, dateFrom, dateTo, addedBy, addedOn) "
-                    + "VALUES((SELECT COUNT(*) + 1 FROM accountdetail),'" + empID + "', " + conf.getStoreID() + ", DATE(NOW()), '" + accountUntil + "', '" + core.getAccountID() + "', DATE(NOW()))";
+                    + "VALUES((SELECT COUNT(*) + 1 FROM accountdetail),'" + empID + "', " + conf.getStoreID() + ", DATE(NOW()), '" + accountUntil + "', '" + getAccountID() + "', DATE(NOW()))";
             dbCore.execute(query);
 
-            query = "INSERT INTO accountdetail(accountID, userName, password) "
-                    + "VALUES((SELECT accountID FROM accountheader WHERE employeeID = '" + empID + "'), '" + userName + "', SHA2('" + passWord + "', 256))";
+            query = "INSERT INTO accountdetail(accountID, userName, password, addedOn, addedBy) "
+                    + "VALUES((SELECT accountID FROM accountheader WHERE employeeID = '" + empID + "'), '" + userName + "', SHA2('" + passWord + "', 256), NOW(), '" + getAccountID() + "')";
             dbCore.execute(query);
             JOptionPane.showMessageDialog(null, "Account added!", null, 1);
         } catch (Exception e) {
-//            logs.logger.log(Level.SEVERE, "An exception occurred", e);
-            e.printStackTrace();
+            logs.logger.log(Level.SEVERE, "An exception occurred", e);
         } finally {
             logs.closeLogger();
         }
