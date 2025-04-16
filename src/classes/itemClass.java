@@ -20,18 +20,26 @@ public class itemClass {
             int PWDAllowed,
             int SeniorAllowed,
             double sellingPrice,
-            String UOMText) {
+            String UOMText,
+            int isVatable,
+            int totalDisc) {
         try {
             logs.setupLogger();
             if (!accountID.isBlank() || !accountID.isEmpty()) {
                 String query = "INSERT INTO itemheader(itemID, itemDescription, supplierID, addedOn, addedBy) "
-                        + "VALUES('" + itemID + "', '" + itemDescription + "', " + supplierID + ", NOW(), '" + accountID + "'); ";
+                        + "VALUES('" + itemID + "', '" + itemDescription.toUpperCase() + "', " + supplierID + ", NOW(), '" + accountID + "'); ";
                 dbCore.execute(query);
-                query = "INSERT INTO itemdetail(itemID, unitPrice, categoryID, description, discountPWDAllowed, discountSCAllowed, unitOfMeasure, addedOn, addedBy) "
-                        + "VALUES('" + itemID + "', " + unitPrice + ", " + categoryID + ", '" + itemDescription + "', '" + PWDAllowed + "', '" + SeniorAllowed + "', '" + UOMText + "', NOW(), '" + accountID + "'); ";
+                if (UOMText != null) {
+                    query = "INSERT INTO itemdetail(itemID, unitPrice, categoryID, description, discountPWDAllowed, discountSCAllowed, unitOfMeasure, addedOn, addedBy, isVatable, totalDiscountAllowed) "
+                            + "VALUES('" + itemID + "', " + unitPrice + ", " + categoryID + ", '" + itemDescription.toUpperCase() + "', " + PWDAllowed + ", " + SeniorAllowed + ", '" + UOMText + "', NOW(), '" + accountID + "', " + isVatable + ", " + totalDisc + "); ";
+                } else {
+                    query = "INSERT INTO itemdetail(itemID, unitPrice, categoryID, description, discountPWDAllowed, discountSCAllowed, addedOn, addedBy, isVatable, totalDiscountAllowed) "
+                            + "VALUES('" + itemID + "', " + unitPrice + ", " + categoryID + ", '" + itemDescription.toUpperCase() + "', " + PWDAllowed + ", " + SeniorAllowed + ", NOW(), '" + accountID + "', " + isVatable + ", " + totalDisc + "); ";
+                }
                 dbCore.execute(query);
                 query = "INSERT INTO itemprice(itemID, value, addedOn, addedBy) VALUES('" + itemID + "', '" + sellingPrice + "', NOW(), '" + accountID + "'); ";
                 dbCore.execute(query);
+                dbCore.closeConnection();
             } else {
                 JOptionPane.showMessageDialog(null, "Please login before adding an item.", "Warning", 1);
             }
@@ -42,6 +50,27 @@ public class itemClass {
         }
     }
 
+    public boolean isItemExist(String ItemID) {
+        boolean isExist = false;
+        ResultSet rs;
+        try {
+            logs.setupLogger();
+            String checkQuery = "SELECT * FROM itemheader WHERE itemID = '" + ItemID + "' AND deletedOn IS NULL";
+            rs = dbCore.getResultSet(checkQuery);
+
+            if (rs.next()) {
+                isExist = true;
+            }
+
+        } catch (Exception e) {
+            logging.logger.log(Level.SEVERE, "An exception occurred", e);
+        } finally {
+            logs.closeLogger();
+        }
+
+        return isExist;
+    }
+
     public void deleteItem(String itemID, String accountID) {
         try {
             logs.setupLogger();
@@ -50,6 +79,7 @@ public class itemClass {
                         + "SET deletedOn = NOW(), deletedBy = '" + accountID + "' "
                         + "WHERE itemID = '" + itemID + "'";
                 dbCore.execute(query);
+                dbCore.closeConnection();
             } else {
                 JOptionPane.showMessageDialog(null, "Please login before deleteing an item", "Warning", 1);
             }
@@ -61,26 +91,28 @@ public class itemClass {
     }
 
     public void updateItemDetails(String ItemID, String ItemDesc, String supplier, String itemCategory,
-            String UOM, int allowPWD, int allowSC, double sellingPrice) {
+            String UOM, int allowPWD, int allowSC, double sellingPrice, int isVatable, int totalDisc) {
         try {
             logs.setupLogger();
-            String query = "UPDATE itemheader SET itemDescription = '" + ItemDesc + "', supplierID = '" + getSuppID(supplier) + "', "
+            String query = "UPDATE itemheader SET itemDescription = '" + ItemDesc.toUpperCase() + "', supplierID = '" + getSuppID(supplier) + "', "
                     + "updatedOn = NOW(), updatedBy = '" + core.getAccountID() + "' "
                     + "WHERE itemID = '" + ItemID + "'";
             dbCore.execute(query);
-            query = "UPDATE itemdetail SET description = '" + ItemDesc + "', categoryID = '" + getCategoryID(itemCategory) + "', "
+            query = "UPDATE itemdetail "
+                    + "SET description = '" + ItemDesc.toUpperCase() + "', categoryID = '" + getCategoryID(itemCategory) + "', "
                     + "discountPWDAllowed = " + allowPWD + ", discountSCAllowed = " + allowSC + ", "
-                    + "updatedOn = NOW(), updatedBy = '" + core.getAccountID() + "'";
-            if (!UOM.equalsIgnoreCase("none")) {
+                    + "updatedOn = NOW(), updatedBy = '" + core.getAccountID() + "', isVatable = " + isVatable + ", totalDiscountAllowed = " + totalDisc + " ";
+            if (UOM != null) {
                 query += ", unitOfMeasure = '" + UOM + "' ";
             } else {
-                query += ", unitOfMeasure = ' ' ";
+                query += ", unitOfMeasure = NULL ";
             }
             query += "WHERE itemID = '" + ItemID + "'";
             dbCore.execute(query);
             query = "INSERT INTO itemprice(itemID, value, addedOn, addedBy) "
                     + "VALUES ('" + ItemID + "', " + sellingPrice + ", NOW(), '" + core.getAccountID() + "')";
             dbCore.execute(query);
+            dbCore.closeConnection();
         } catch (Exception e) {
             logs.logger.log(Level.SEVERE, "An exception occurred", e);
         } finally {

@@ -61,6 +61,8 @@ public class addItemForm extends javax.swing.JFrame {
         saveBtn = new javax.swing.JButton();
         clearBtn = new javax.swing.JButton();
         closeBtn = new javax.swing.JButton();
+        itemVatable = new javax.swing.JCheckBox();
+        totalDisc = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -187,6 +189,10 @@ public class addItemForm extends javax.swing.JFrame {
             }
         });
 
+        itemVatable.setText("Vatable");
+
+        totalDisc.setText("Allow Total Discount");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -230,8 +236,6 @@ public class addItemForm extends javax.swing.JFrame {
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton1)
-                            .addComponent(allowPWD)
-                            .addComponent(allowSenior)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -239,7 +243,15 @@ public class addItemForm extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(clearBtn)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(closeBtn)))
+                                .addComponent(closeBtn))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(allowPWD)
+                                    .addComponent(allowSenior))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(itemVatable)
+                                    .addComponent(totalDisc))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -287,13 +299,19 @@ public class addItemForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(allowPWD, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(allowSenior, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(allowPWD, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(allowSenior, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(itemVatable, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(totalDisc, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -352,11 +370,13 @@ public class addItemForm extends javax.swing.JFrame {
             String itemDescription = itemDesc.getText().trim();
             double initialPrice = Double.parseDouble(unitPrice.getText().trim());
             double sellPrice = Double.parseDouble(sellingPrice.getText().trim());
-            int pwd = 0;
-            int scd = 0;
             int suppID = 0;
             int catID = 0;
-            String UOMDesc = UOMText.getText().toUpperCase();
+            int scd = (allowSenior.isSelected()) ? 1 : 0;
+            int pwd = (allowPWD.isSelected()) ? 1 : 0;
+            int isVatable = (itemVatable.isSelected()) ? 1 : 0;
+            int totalDiscount = (totalDisc.isSelected()) ? 1 : 0;
+            String UOMDesc = (enableUOM.isSelected()) ? UOMText.getText() : null;
             boolean isInsertReady = false;
 
             if (categoryList.getSelectedIndex() == 0) {
@@ -369,18 +389,15 @@ public class addItemForm extends javax.swing.JFrame {
                 isInsertReady = true;
             }
 
-            if (allowPWD.isSelected()) {
-                pwd = 1;
-            }
-
-            if (allowSenior.isSelected()) {
-                scd = 1;
-            }
-
             if (isInsertReady) {
-                classItem.addItem(itemIDs, itemDescription, suppID, core.getAccountID(), initialPrice,
-                        catID, pwd, scd, sellPrice, UOMDesc);
-                dispose();
+                if (!classItem.isItemExist(itemIDs)) {
+                    classItem.addItem(itemIDs, itemDescription, suppID, core.getAccountID(), initialPrice,
+                            catID, pwd, scd, sellPrice, UOMDesc, isVatable, totalDiscount);
+                    dispose();
+                }else{
+                    JOptionPane.showMessageDialog(null, "Item ID existing. Try again.");
+                    itemID.setText("");
+                }
             }
         } catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(null, "Please input a valid number. Try again.");
@@ -414,30 +431,17 @@ public class addItemForm extends javax.swing.JFrame {
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
         int option = JOptionPane.showConfirmDialog(null, "Save changes?", "Update Warning", 0);
         if (option == 0) {
-            String UOMDesc;
-            int PWD = 0;
-            int SC = 0;
-
-            if (enableUOM.isSelected()) {
-                System.out.println("True");
-                UOMDesc = UOMText.getText();
-            } else {
-                UOMDesc = "None";
-            }
-
-            if (allowPWD.isSelected()) {
-                PWD = 1;
-            }
-
-            if (allowSenior.isSelected()) {
-                SC = 1;
-            }
+            String UOMDesc = (enableUOM.isSelected()) ? UOMText.getText() : null;
+            int scd = (allowSenior.isSelected()) ? 1 : 0;
+            int pwd = (allowPWD.isSelected()) ? 1 : 0;
+            int isVatable = (itemVatable.isSelected()) ? 1 : 0;
+            int totalDiscount = (totalDisc.isSelected()) ? 1 : 0;
 
             try {
                 logs.setupLogger();
                 classItem.updateItemDetails(itemID.getText().trim(), itemDesc.getText().trim(), suppList.getSelectedItem().toString(),
                         categoryList.getSelectedItem().toString(), UOMDesc,
-                        PWD, SC, Double.parseDouble(sellingPrice.getText().trim()));
+                        pwd, scd, Double.parseDouble(sellingPrice.getText().trim()), isVatable, totalDiscount);
             } catch (Exception e) {
                 logs.logger.log(Level.SEVERE, "An exception occurred", e);
             } finally {
@@ -504,6 +508,7 @@ public class addItemForm extends javax.swing.JFrame {
     private static javax.swing.JCheckBox enableUOM;
     private static javax.swing.JTextField itemDesc;
     private static javax.swing.JTextField itemID;
+    private static javax.swing.JCheckBox itemVatable;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -522,6 +527,7 @@ public class addItemForm extends javax.swing.JFrame {
     private javax.swing.JButton saveBtn;
     private static javax.swing.JTextField sellingPrice;
     private static javax.swing.JComboBox<String> suppList;
+    private static javax.swing.JCheckBox totalDisc;
     private static javax.swing.JTextField unitPrice;
     // End of variables declaration//GEN-END:variables
 

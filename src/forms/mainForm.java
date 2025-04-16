@@ -67,6 +67,7 @@ public class mainForm extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         profileTable = new javax.swing.JTable();
         jButton15 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -150,7 +151,7 @@ public class mainForm extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(itemSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 643, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 682, Short.MAX_VALUE)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -258,20 +259,20 @@ public class mainForm extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        tabPane.addTab("Item Manager", jPanel1);
+        tabPane.addTab("Items", jPanel1);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1130, Short.MAX_VALUE)
+            .addGap(0, 1169, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 697, Short.MAX_VALUE)
         );
 
-        tabPane.addTab("Discount Manager", jPanel3);
+        tabPane.addTab("Discounts", jPanel3);
 
         accountsTab.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -330,7 +331,7 @@ public class mainForm extends javax.swing.JFrame {
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(operatorSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 643, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 682, Short.MAX_VALUE)
                 .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -505,7 +506,7 @@ public class mainForm extends javax.swing.JFrame {
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(profileSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 643, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 682, Short.MAX_VALUE)
                 .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -626,7 +627,20 @@ public class mainForm extends javax.swing.JFrame {
             .addComponent(accountsTab)
         );
 
-        tabPane.addTab("Account Manager", jPanel6);
+        tabPane.addTab("Accounts", jPanel6);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1169, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 697, Short.MAX_VALUE)
+        );
+
+        tabPane.addTab("Workstation", jPanel2);
 
         jMenu1.setText("Item");
 
@@ -859,7 +873,7 @@ public class mainForm extends javax.swing.JFrame {
             }
             showItems();
         } catch (ArrayIndexOutOfBoundsException ai) {
-            JOptionPane.showMessageDialog(null, "Please select an item to view details.", "Warning", 0);
+            JOptionPane.showMessageDialog(null, "Select an item before deleting.", "Warning", 0);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -912,7 +926,7 @@ public class mainForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane accountsTab;
-    private javax.swing.JTextField itemSearch;
+    public static javax.swing.JTextField itemSearch;
     private javax.swing.JTable itemTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
@@ -944,6 +958,7 @@ public class mainForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
@@ -999,7 +1014,7 @@ public class mainForm extends javax.swing.JFrame {
             String query = "SELECT ah.accountID AS `Account ID`, employeeID AS `Employee ID`, userName AS `Username` "
                     + "FROM accountheader ah "
                     + "JOIN accountdetail ad ON ah.accountID = ad.accountID "
-                    + "WHERE deletedOn IS NULL ";
+                    + "WHERE ah.deletedOn IS NULL ";
             if (!operatorSearch.getText().isBlank() || !operatorSearch.getText().isEmpty()) {
                 query += "AND ah.accountID REGEXP '" + operatorSearch.getText() + "' OR employeeID REGEXP '" + operatorSearch.getText() + "' "
                         + "OR userName REGEXP '" + operatorSearch.getText() + "' ";
