@@ -2,17 +2,15 @@ package classes;
 
 import java.sql.*;
 
-public class dbConnect {
-
-    static logging logs = new logging();
+public class dbConnect extends logging{
 
     // Database URL, username, and password CL_POS_SERVER
     private static final String URL = "jdbc:mysql://CL_POS_SERVER:3306/cl_posmain";
     private static final String USER = "sa";
     private static final String PASSWORD = "tpdotnet";
-    private static Connection connection = null;
+    public Connection connection = null;
 
-    public static Connection con() {
+    public Connection con() {
 
         try {
             // Load the JDBC driver (not always necessary with modern drivers)
@@ -22,9 +20,9 @@ public class dbConnect {
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
             // Perform database operations here...
         } catch (ClassNotFoundException | SQLException e) {
-            logs.logger.log(java.util.logging.Level.SEVERE, "An exception occurred", e);
+            logger.log(java.util.logging.Level.SEVERE, "An exception occurred", e);
         } finally {
-            logs.closeLogger();
+            closeLogger();
         }
 
         return connection;

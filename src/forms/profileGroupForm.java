@@ -1,21 +1,21 @@
 package forms;
 
 import classes.coreClass;
-import classes.databaseCore;
+import classes.dbConnect;
 import classes.logging;
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
+import java.sql.*;
 
 public class profileGroupForm extends javax.swing.JFrame {
 
+    PreparedStatement pst;
     ResultSet rs;
+    Connection con = new dbConnect().con();
     coreClass core = new coreClass();
     logging logs = new logging();
-    databaseCore dbCore = new databaseCore();
     private int initialNum = 0;
     private int maxNum = 40;
     private final int addedNum = 40;
@@ -293,44 +293,81 @@ public class profileGroupForm extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void showGroupNames(String groupName, int initial, int max) {
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+
         try {
             logs.setupLogger();
-            String query = "SELECT description AS `Description` "
-                    + "FROM profilegroup ";
+            String query;
 
             if (groupName != null && (!groupName.isBlank() || !groupName.isEmpty())) {
-                query += "WHERE description REGEXP '" + groupName + "' "
-                        + "AND deletedOn IS NULL "
+                query = "SELECT description AS `Description` "
+                        + "FROM profilegroup "
+                        + "WHERE description REGEXP ? AND deletedOn IS NULL "
                         + "ORDER BY description "
-                        + "LIMIT " + initial + ", " + max + " ";
+                        + "LIMIT ?, ?";
+                pst = con.prepareStatement(query);
+                pst.setString(1, groupName);
+                pst.setInt(2, initial);
+                pst.setInt(3, max);
             } else {
-                query += "WHERE deletedOn IS NULL "
+                query = "SELECT description AS `Description` "
+                        + "FROM profilegroup "
+                        + "WHERE deletedOn IS NULL "
                         + "ORDER BY description "
-                        + "LIMIT " + initial + ", " + max + " ";
+                        + "LIMIT ?, ?";
+                pst = con.prepareStatement(query);
+                pst.setInt(1, initial);
+                pst.setInt(2, max);
             }
-            rs = dbCore.getResultSet(query);
+
+            rs = pst.executeQuery();
             suppTable.setModel(DbUtils.resultSetToTableModel(rs));
+
         } catch (Exception e) {
             logs.logger.log(Level.SEVERE, "An exception occurred", e);
         } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+            } catch (Exception ex) {
+                logs.logger.log(Level.WARNING, "Error closing resources", ex);
+            }
             logs.closeLogger();
         }
     }
 
     private int getGroupCount() {
         int count = 0;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+
         try {
             logs.setupLogger();
             String query = "SELECT COUNT(*) AS `Counts` FROM profilegroup WHERE deletedOn IS NULL";
-            rs = dbCore.getResultSet(query);
+            pst = con.prepareStatement(query);
+            rs = pst.executeQuery();
+
             if (rs.next()) {
-                count = Integer.parseInt(rs.getString("Counts"));
+                count = rs.getInt("Counts");
             }
-            rs.close();
-            dbCore.closeConnection();
         } catch (IOException | SQLException e) {
             logs.logger.log(Level.SEVERE, "An exception occurred", e);
         } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+            } catch (SQLException e) {
+                logs.logger.log(Level.WARNING, "Failed to close resources", e);
+            }
             logs.closeLogger();
         }
         return count;

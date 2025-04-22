@@ -1,14 +1,22 @@
-
 package forms;
 
+import classes.dbConnect;
+import classes.itemClass;
+import classes.logging;
+import java.util.logging.Level;
+import javax.swing.JOptionPane;
+import java.sql.*;
 
 public class barcodeListForm extends javax.swing.JFrame {
+
+    public static String itemID;
+    logging logs = new logging();
+    itemClass item = new itemClass();
 
     public barcodeListForm() {
         initComponents();
     }
 
- 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -95,7 +103,18 @@ public class barcodeListForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        // TODO add your handling code here:
+        try {
+            //check if barcode is added or it has the same itemid in item table
+            if (item.isBarcodeUsed(itemID)) {
+                JOptionPane.showMessageDialog(null, "Barcode is used. Try another.");
+            }else{
+                String barcode = JOptionPane.showInputDialog(null, "Input barcode");
+            }
+        } catch (Exception e) {
+            logs.logger.log(Level.SEVERE, "An exception occurred", e);
+        } finally {
+            logs.closeLogger();
+        }
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked

@@ -1,7 +1,7 @@
 package forms;
 
 import classes.coreClass;
-import classes.databaseCore;
+import classes.dbConnect;
 import classes.itemClass;
 import classes.logging;
 import java.util.logging.Level;
@@ -10,11 +10,13 @@ import javax.swing.JOptionPane;
 
 public class addItemForm extends javax.swing.JFrame {
 
-    public static String compHide = "";
+    PreparedStatement pst;
+    ResultSet rs;
+    Connection con = new dbConnect().con();
+    public static String compHide;
     public static boolean itemUOM = false;
-    public static String itemIDText = "";
+    public static String itemIDText;
     logging logs = new logging();
-    databaseCore dbCore = new databaseCore();
     coreClass core = new coreClass();
     itemClass classItem = new itemClass();
 
@@ -56,7 +58,7 @@ public class addItemForm extends javax.swing.JFrame {
         jSeparator3 = new javax.swing.JSeparator();
         jLabel8 = new javax.swing.JLabel();
         sellingPrice = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        barcodeBtn = new javax.swing.JButton();
         addBtn = new javax.swing.JButton();
         saveBtn = new javax.swing.JButton();
         clearBtn = new javax.swing.JButton();
@@ -150,10 +152,10 @@ public class addItemForm extends javax.swing.JFrame {
 
         sellingPrice.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
-        jButton1.setText("See Barcodes");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        barcodeBtn.setText("See Barcodes");
+        barcodeBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                barcodeBtnActionPerformed(evt);
             }
         });
 
@@ -235,7 +237,7 @@ public class addItemForm extends javax.swing.JFrame {
                             .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1)
+                            .addComponent(barcodeBtn)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -297,7 +299,7 @@ public class addItemForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(sellingPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(barcodeBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -360,8 +362,8 @@ public class addItemForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void closeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtnActionPerformed
-        dispose();
         itemIDText = "";
+        dispose();
     }//GEN-LAST:event_closeBtnActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
@@ -394,7 +396,7 @@ public class addItemForm extends javax.swing.JFrame {
                     classItem.addItem(itemIDs, itemDescription, suppID, core.getAccountID(), initialPrice,
                             catID, pwd, scd, sellPrice, UOMDesc, isVatable, totalDiscount);
                     dispose();
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(null, "Item ID existing. Try again.");
                     itemID.setText("");
                 }
@@ -458,9 +460,10 @@ public class addItemForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_formWindowGainedFocus
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void barcodeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barcodeBtnActionPerformed
         new barcodeListForm().setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+        barcodeListForm.itemID = itemID.getText().trim();
+    }//GEN-LAST:event_barcodeBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -502,6 +505,7 @@ public class addItemForm extends javax.swing.JFrame {
     private javax.swing.JButton addBtn;
     private static javax.swing.JCheckBox allowPWD;
     private static javax.swing.JCheckBox allowSenior;
+    private javax.swing.JButton barcodeBtn;
     private static javax.swing.JComboBox<String> categoryList;
     private javax.swing.JButton clearBtn;
     private javax.swing.JButton closeBtn;
@@ -509,7 +513,6 @@ public class addItemForm extends javax.swing.JFrame {
     private static javax.swing.JTextField itemDesc;
     private static javax.swing.JTextField itemID;
     private static javax.swing.JCheckBox itemVatable;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -548,9 +551,11 @@ public class addItemForm extends javax.swing.JFrame {
     private void initialBehavior() {
         if (compHide.equalsIgnoreCase("Add")) {
             saveBtn.setVisible(false);
+            barcodeBtn.setVisible(false);
         } else if (compHide.equalsIgnoreCase("Edit")) {
             addBtn.setVisible(false);
             clearBtn.setVisible(false);
+            barcodeBtn.setVisible(true);
             unitPrice.disable();
             itemID.disable();
         }
@@ -579,12 +584,12 @@ public class addItemForm extends javax.swing.JFrame {
 
     private void getSupplierList() {
         try {
-            ResultSet rs;
             logs.setupLogger();
             String query = "SELECT supplierName "
                     + "FROM itemsupplier "
                     + "WHERE deletedOn IS NULL AND deletedBy IS NULL";
-            rs = dbCore.getResultSet(query);
+            pst = con.prepareStatement(query);
+            rs = pst.executeQuery();
             suppList.removeAllItems();
             suppList.addItem("");
             while (rs.next()) {
@@ -600,12 +605,12 @@ public class addItemForm extends javax.swing.JFrame {
 
     private void getCategoryList() {
         try {
-            ResultSet rs;
             logs.setupLogger();
             String query = "SELECT description "
                     + "FROM itemcategory "
                     + "WHERE deletedOn IS NULL AND deletedBy IS NULL";
-            rs = dbCore.getResultSet(query);
+            pst = con.prepareStatement(query);
+            rs = pst.executeQuery();
             categoryList.removeAllItems();
             categoryList.addItem("");
             while (rs.next()) {
@@ -632,7 +637,7 @@ public class addItemForm extends javax.swing.JFrame {
             String PWDAllowed,
             String SeniorAllowed,
             String sellingPrices,
-            String UOMTexts) {
+            String UOMTexts, String vatable, String totalDiscount) {
         itemID.setText(itemIDs);
         itemDesc.setText(itemDescription);
         sellingPrice.setText(sellingPrices);
@@ -645,6 +650,14 @@ public class addItemForm extends javax.swing.JFrame {
 
         if (SeniorAllowed.equalsIgnoreCase("1")) {
             allowSenior.setSelected(true);
+        }
+
+        if (vatable.equalsIgnoreCase("1")) {
+            itemVatable.setSelected(true);
+        }
+
+        if (totalDiscount.equalsIgnoreCase("1")) {
+            totalDisc.setSelected(true);
         }
 
         if (UOMTexts.isBlank() || UOMTexts.isEmpty()) {

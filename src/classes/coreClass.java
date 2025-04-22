@@ -6,12 +6,13 @@ import java.sql.*;
 import java.util.logging.Level;
 import javax.swing.JOptionPane;
 
-public class coreClass {
+public class coreClass extends dbConnect {
 
     logging logs = new logging();
-    databaseCore dbCore = new databaseCore();
     ResultSet rs;
     private static String accountID = "";
+    private Connection con = con();
+    PreparedStatement pst;
 
     public void insertSuppName(String suppName, String accountID) {
         try {
@@ -20,8 +21,12 @@ public class coreClass {
                 if (isSupplierExisting(suppName)) {
                     JOptionPane.showMessageDialog(null, "Supplier existing. Try again.");
                 } else {
-                    String query = "INSERT INTO itemsupplier(supplierName,  addedOn, addedBy) VALUES('" + suppName + "', NOW(), '" + accountID + "')";
-                    dbCore.execute(query);
+                    String query = "INSERT INTO itemsupplier(supplierName, addedOn, addedBy) VALUES(?, NOW(), ?)";
+                    pst = con.prepareStatement(query);
+                    pst.setString(1, suppName);
+                    pst.setString(2, accountID);
+                    pst.executeUpdate();
+                    pst.close();
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Please login before adding a supplier", "Warning", 1);
@@ -37,16 +42,17 @@ public class coreClass {
         try {
             logs.setupLogger();
             if (!accountID.isBlank() || !accountID.isEmpty()) {
-                String query = "UPDATE itemsupplier "
-                        + "SET deletedOn = NOW(), deletedBy = '" + accountID + "' "
-                        + "WHERE supplierName = '" + suppName + "' "
-                        + "AND deletedOn IS NULL";
-                dbCore.execute(query);
+                String query = "UPDATE itemsupplier SET deletedOn = NOW(), deletedBy = ? WHERE supplierName = ? AND deletedOn IS NULL";
+                pst = con.prepareStatement(query);
+                pst.setString(1, accountID);
+                pst.setString(2, suppName);
+                pst.executeUpdate();
+                pst.close();
             } else {
-                JOptionPane.showMessageDialog(null, "Please login before deleteing a supplier", "Warning", 1);
+                JOptionPane.showMessageDialog(null, "Please login before deleting a supplier", "Warning", 1);
             }
         } catch (Exception e) {
-            logs.logger.log(Level.SEVERE, "An exception occurred", e);
+            logging.logger.log(Level.SEVERE, "An exception occurred", e);
         } finally {
             logs.closeLogger();
         }
@@ -61,13 +67,17 @@ public class coreClass {
                     + "JOIN accountdetail ad "
                     + "ON ah.accountID = ad.accountID "
                     + "WHERE ah.deletedOn IS NULL "
-                    + "AND userName = '" + username + "' AND password = SHA2('" + password + "', 256) ";
-            rs = dbCore.getResultSet(query);
+                    + "AND userName = ? AND password = SHA2(?, 256) ";
+            pst = con.prepareStatement(query);
+            pst.setString(1, username);
+            pst.setString(2, password);
+            rs = pst.executeQuery();
             if (rs.next()) {
                 res = true;
                 setAccountID(rs.getString("accountID"));
             }
             rs.close();
+            pst.close();
         } catch (IOException | SQLException e) {
             logs.logger.log(Level.SEVERE, "An exception occurred", e);
         } finally {
@@ -89,9 +99,14 @@ public class coreClass {
             logs.setupLogger();
             if (!accountID.isBlank() || !accountID.isEmpty()) {
                 String query = "UPDATE itemcategory "
-                        + "SET deletedOn = NOW(), deletedBy = '" + accountID + "' "
-                        + "WHERE description = '" + categoryName + "'";
-                dbCore.execute(query);
+                        + "SET deletedOn = NOW(), deletedBy = ? "
+                        + "WHERE description = ? ";
+                pst = con.prepareStatement(query);
+                pst.setString(1, accountID);
+                pst.setString(2, categoryName);
+                pst.executeUpdate();
+
+                pst.close();
             } else {
                 JOptionPane.showMessageDialog(null, "Please login before deleteing a supplier", "Warning", 1);
             }
@@ -110,10 +125,17 @@ public class coreClass {
                     JOptionPane.showMessageDialog(null, "Category existing. Try again.");
                 } else {
                     String query = "SELECT COUNT(*) AS 'Category_Count' FROM itemcategory";
-                    rs = dbCore.getResultSet(query);
+                    pst = con.prepareStatement(query);
+                    rs = pst.executeQuery(query);
                     if (rs.next()) {
-                        String insertQuery = "INSERT INTO itemcategory(categoryID, description,  addedOn, addedBy) VALUES(" + Integer.parseInt(rs.getString("Category_Count")) + ",'" + categoryName + "', NOW(), '" + accountID + "')";
-                        dbCore.execute(insertQuery);
+                        int categoryCount = rs.getInt("Category_Count");
+                        String insertQuery = "INSERT INTO itemcategory(categoryID, description, addedOn, addedBy) VALUES(?, ?, NOW(), ?)";
+                        PreparedStatement pst1 = con.prepareStatement(insertQuery);
+                        pst1.setInt(1, categoryCount + 1);
+                        pst1.setString(2, categoryName);
+                        pst1.setString(3, accountID);
+                        pst1.executeUpdate();
+                        pst1.close();
                     }
                 }
             } else {
@@ -132,9 +154,11 @@ public class coreClass {
             logs.setupLogger();
             String query = "SELECT * "
                     + "FROM itemcategory "
-                    + "WHERE description = '" + categoryName + "' "
+                    + "WHERE description = ? "
                     + "AND deletedOn IS NULL ";
-            rs = dbCore.getResultSet(query);
+            pst = con.prepareStatement(query);
+            pst.setString(1, categoryName);
+            rs = pst.executeQuery(query);
             if (rs.next()) {
                 res = true;
             }
@@ -153,9 +177,11 @@ public class coreClass {
             logs.setupLogger();
             String query = "SELECT * "
                     + "FROM itemsupplier "
-                    + "WHERE supplierName = '" + supplierName + "' "
+                    + "WHERE supplierName = ? "
                     + "AND deletedOn IS NULL ";
-            rs = dbCore.getResultSet(query);
+            pst = con.prepareStatement(query);
+            pst.setString(1, supplierName);
+            rs = pst.executeQuery();
             if (rs.next()) {
                 res = true;
             }
@@ -172,27 +198,82 @@ public class coreClass {
             String userName, String passWord, String accountUntil) {
         try {
             logs.setupLogger();
-            String query = "INSERT INTO employees(employeeID, firstName, middleName, lastName, addedOn, addedBy) "
-                    + "VALUES ('" + empID + "', '" + firstName + "', '" + middleName + "', '" + lastName + "', NOW(), '" + getAccountID() + "')";
-            if (middleName.isBlank() || middleName.isEmpty()) {
-                query = "INSERT INTO employees(employeeID, firstName, lastName) "
-                        + "VALUES ('" + empID + "', '" + firstName + "', '" + lastName + "')";
-            }
-            dbCore.execute(query);
-
             config conf = new config();
-            coreClass core = new coreClass();
-            query = "INSERT INTO accountheader(accountID, employeeID, storeID, dateFrom, dateTo, addedBy, addedOn) "
-                    + "VALUES((SELECT COUNT(*) + 1 FROM accountdetail),'" + empID + "', " + conf.getStoreID() + ", DATE(NOW()), '" + accountUntil + "', '" + getAccountID() + "', DATE(NOW()))";
-            dbCore.execute(query);
+            con.setAutoCommit(false); // Begin transaction
 
-            query = "INSERT INTO accountdetail(accountID, userName, password, addedOn, addedBy) "
-                    + "VALUES((SELECT accountID FROM accountheader WHERE employeeID = '" + empID + "'), '" + userName + "', SHA2('" + passWord + "', 256), NOW(), '" + getAccountID() + "')";
-            dbCore.execute(query);
+            // Insert into employees
+            if (middleName == null || middleName.isBlank()) {
+                pst = con.prepareStatement("INSERT INTO employees(employeeID, firstName, lastName, addedOn, addedBy) VALUES (?, ?, ?, NOW(), ?)");
+                pst.setString(1, empID);
+                pst.setString(2, firstName);
+                pst.setString(3, lastName);
+                pst.setString(4, getAccountID());
+            } else {
+                pst = con.prepareStatement("INSERT INTO employees(employeeID, firstName, middleName, lastName, addedOn, addedBy) VALUES (?, ?, ?, ?, NOW(), ?)");
+                pst.setString(1, empID);
+                pst.setString(2, firstName);
+                pst.setString(3, middleName);
+                pst.setString(4, lastName);
+                pst.setString(5, getAccountID());
+            }
+            pst.executeUpdate();
+            pst.close();
+
+            // Generate new accountID based on COUNT(*) + 1
+            pst = con.prepareStatement("SELECT COUNT(*) + 1 AS newID FROM accountdetail");
+            rs = pst.executeQuery();
+            int newAccountID = 1;
+            if (rs.next()) {
+                newAccountID = rs.getInt("newID");
+            }
+            rs.close();
+            pst.close();
+
+            // Insert into accountheader
+            pst = con.prepareStatement("INSERT INTO accountheader(accountID, employeeID, storeID, dateFrom, dateTo, addedBy, addedOn) VALUES (?, ?, ?, DATE(NOW()), ?, ?, DATE(NOW()))");
+            pst.setInt(1, newAccountID);
+            pst.setString(2, empID);
+            pst.setInt(3, conf.getStoreID());
+            pst.setString(4, accountUntil);
+            pst.setString(5, getAccountID());
+            pst.executeUpdate();
+            pst.close();
+
+            // Insert into accountdetail
+            pst = con.prepareStatement("INSERT INTO accountdetail(accountID, userName, password, addedOn, addedBy) VALUES (?, ?, SHA2(?, 256), NOW(), ?)");
+            pst.setInt(1, newAccountID);
+            pst.setString(2, userName);
+            pst.setString(3, passWord);
+            pst.setString(4, getAccountID());
+            pst.executeUpdate();
+            pst.close();
+
+            con.commit(); // Commit transaction
             JOptionPane.showMessageDialog(null, "Account added!", null, 1);
+
         } catch (Exception e) {
+            try {
+                if (con != null) {
+                    con.rollback(); // Rollback on error
+                }
+            } catch (SQLException ex) {
+                logs.logger.log(Level.SEVERE, "Rollback failed", ex);
+            }
             logs.logger.log(Level.SEVERE, "An exception occurred", e);
         } finally {
+            try {
+                if (pst != null) {
+                    pst.close();
+                }
+                if (con != null) {
+                    con.setAutoCommit(true);
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                logs.logger.log(Level.SEVERE, "Closing resources failed", ex);
+            }
             logs.closeLogger();
         }
     }
@@ -204,7 +285,8 @@ public class coreClass {
             String query = "SELECT COUNT(*) AS 'Counts' "
                     + "FROM accountheader "
                     + "WHERE deletedOn IS NULL ";
-            rs = dbCore.getResultSet(query);
+            pst = con.prepareStatement(query);
+            rs = pst.executeQuery();
             if (rs.next()) {
                 res = Integer.parseInt(rs.getString("Counts"));
             }
@@ -224,8 +306,11 @@ public class coreClass {
                 if (isProfileGroupExisting(groupName)) {
                     JOptionPane.showMessageDialog(null, "Profile Group existing. Try again.");
                 } else {
-                    String query = "INSERT INTO profilegroup(description, addedOn, addedBy) VALUES('" + groupName + "', NOW(), '" + accountID + "')";
-                    dbCore.execute(query);
+                    String query = "INSERT INTO profilegroup(description, addedOn, addedBy) VALUES(? , NOW(), ?)";
+                    pst = con.prepareStatement(query);
+                    pst.setString(1, groupName);
+                    pst.setString(2, accountID);
+                    pst.executeUpdate();
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Please login before adding a profile group.", "Warning", 1);
@@ -242,10 +327,13 @@ public class coreClass {
             logs.setupLogger();
             if (!accountID.isBlank() || !accountID.isEmpty()) {
                 String query = "UPDATE profilegroup "
-                        + "SET deletedOn = NOW(), deletedBy = '" + accountID + "' "
-                        + "WHERE description = '" + groupName + "' "
+                        + "SET deletedOn = NOW(), deletedBy = ? "
+                        + "WHERE description = ? "
                         + "AND deletedOn IS NULL";
-                dbCore.execute(query);
+                pst = con.prepareStatement(query);
+                pst.setString(1, accountID);
+                pst.setString(2, groupName);
+                pst.executeUpdate();
             } else {
                 JOptionPane.showMessageDialog(null, "Please login before deleteing a group", "Warning", 1);
             }
@@ -260,32 +348,81 @@ public class coreClass {
             int voidReceiptFlag, int totalDiscountFlag, int reprintReceiptFlag, int lineVoidFlag, int priceOverrideFlag) {
         try {
             logs.setupLogger();
+            con.setAutoCommit(false);
 
-            ResultSet rs;
             int groupID = 0;
-            String query = "SELECT Auto_ID FROM profilegroup WHERE description = '" + groupName + "' AND deletedOn IS NULL ";
-            rs = dbCore.getResultSet(query);
+
+            // 1. Get profileGroup ID
+            String query = "SELECT Auto_ID FROM profilegroup WHERE description = ? AND deletedOn IS NULL";
+            pst = con.prepareStatement(query);
+            pst.setString(1, groupName);
+            rs = pst.executeQuery();
             if (rs.next()) {
-                groupID = Integer.parseInt(rs.getString("Auto_ID"));
+                groupID = rs.getInt("Auto_ID");
             }
+            rs.close();
+            pst.close();
 
-            query = "INSERT INTO profileheader(accountID, profileGroupID, addedOn, addedBy) "
-                    + "VALUES ('" + accountID + "'," + groupID + ",NOW(), '" + addedBy + "')";
-            dbCore.execute(query);
+            // 2. Insert into profileheader
+            query = "INSERT INTO profileheader(accountID, profileGroupID, addedOn, addedBy) VALUES (?, ?, NOW(), ?)";
+            pst = con.prepareStatement(query);
+            pst.setString(1, accountID);
+            pst.setInt(2, groupID);
+            pst.setString(3, addedBy);
+            pst.executeUpdate();
+            pst.close();
 
-            query = "SELECT Auto_ID FROM profileheader WHERE accountID = '" + accountID + "' AND deletedOn IS NULL ORDER BY Auto_ID DESC LIMIT 1 ";
-            rs = dbCore.getResultSet(query);
+            // 3. Get inserted profileheader ID
             int profileID = 0;
+            query = "SELECT Auto_ID FROM profileheader WHERE accountID = ? AND deletedOn IS NULL ORDER BY Auto_ID DESC LIMIT 1";
+            pst = con.prepareStatement(query);
+            pst.setString(1, accountID);
+            rs = pst.executeQuery();
             if (rs.next()) {
-                profileID = Integer.parseInt(rs.getString("Auto_ID"));
+                profileID = rs.getInt("Auto_ID");
             }
-            query = "INSERT INTO profileprotocol(profileProtocolID ,profileID, discountOverride, abortReceipt, totalDiscount, voidReceipt, reprintReceipt, lineVoid, priceOverride) "
-                    + "VALUES (" + groupID + "," + profileID + ", " + discountOverrideFlag + "," + abortReceiptFlag + "," + totalDiscountFlag + "," + voidReceiptFlag + "," + reprintReceiptFlag + "," + lineVoidFlag + "," + priceOverrideFlag + ")";
-            dbCore.execute(query);
+            rs.close();
+            pst.close();
 
+            // 4. Insert into profileprotocol
+            query = "INSERT INTO profileprotocol(profileProtocolID, profileID, discountOverride, abortReceipt, totalDiscount, voidReceipt, reprintReceipt, lineVoid, priceOverride) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            pst = con.prepareStatement(query);
+            pst.setInt(1, groupID);
+            pst.setInt(2, profileID);
+            pst.setInt(3, discountOverrideFlag);
+            pst.setInt(4, abortReceiptFlag);
+            pst.setInt(5, totalDiscountFlag);
+            pst.setInt(6, voidReceiptFlag);
+            pst.setInt(7, reprintReceiptFlag);
+            pst.setInt(8, lineVoidFlag);
+            pst.setInt(9, priceOverrideFlag);
+            pst.executeUpdate();
+
+            con.commit();
         } catch (Exception e) {
+            try {
+                if (con != null) {
+                    con.rollback();
+                }
+            } catch (SQLException ex) {
+                logs.logger.log(Level.SEVERE, "Rollback failed", ex);
+            }
             logging.logger.log(Level.SEVERE, "An exception occurred", e);
         } finally {
+            try {
+                if (pst != null) {
+                    pst.close();
+                }
+                if (con != null) {
+                    con.setAutoCommit(true);
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                logs.logger.log(Level.SEVERE, "Error closing resources", ex);
+            }
             logs.closeLogger();
         }
     }
@@ -296,9 +433,11 @@ public class coreClass {
             logs.setupLogger();
             String query = "SELECT * "
                     + "FROM profilegroup "
-                    + "WHERE description = '" + groupName + "' "
+                    + "WHERE description = ? "
                     + "AND deletedOn IS NULL ";
-            rs = dbCore.getResultSet(query);
+            pst = con.prepareStatement(query);
+            pst.setString(1, groupName);
+            rs = pst.executeQuery();
             if (rs.next()) {
                 res = true;
             }

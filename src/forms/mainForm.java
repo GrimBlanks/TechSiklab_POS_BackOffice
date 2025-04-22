@@ -1,17 +1,20 @@
 package forms;
 
 import classes.coreClass;
-import classes.databaseCore;
+import classes.dbConnect;
 import classes.itemClass;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
+import java.sql.*;
 
 public class mainForm extends javax.swing.JFrame {
 
     coreClass core = new coreClass();
-    databaseCore dbCore = new databaseCore();
     itemClass classItem = new itemClass();
+    PreparedStatement pst;
+    ResultSet rs;
+    dbConnect dbConnect = new dbConnect();
 
     final int tableCount = 40;
     int initialCount = 0;
@@ -977,52 +980,148 @@ public class mainForm extends javax.swing.JFrame {
 
     private void showItems() {
         if (tabPane.getSelectedIndex() == 0) {
+            PreparedStatement pst = null;
+            ResultSet rs = null;
             try {
-                String query = "SELECT ItemID AS `Item ID`, itemDescription AS `Item Description`, s.supplierName AS `Supplier`"
-                        + "FROM itemheader ih "
-                        + "JOIN itemsupplier s "
-                        + "ON ih.supplierID = s.Auto_ID "
-                        + "WHERE ih.deletedOn IS NULL AND ih.deletedBy IS NULL ";
-                if (!itemSearch.getText().isBlank() || !itemSearch.getText().isEmpty()) {
-                    query += "AND (itemID REGEXP '" + itemSearch.getText() + "' OR itemDescription REGEXP '" + itemSearch.getText() + "' "
-                            + "OR s.supplierName REGEXP '" + itemSearch.getText() + "') ";
+                StringBuilder query = new StringBuilder();
+                query.append("SELECT ItemID AS `Item ID`, itemDescription AS `Item Description`, s.supplierName AS `Supplier` ")
+                        .append("FROM itemheader ih ")
+                        .append("JOIN itemsupplier s ON ih.supplierID = s.Auto_ID ")
+                        .append("WHERE ih.deletedOn IS NULL AND ih.deletedBy IS NULL ");
+
+                boolean hasSearch = !itemSearch.getText().isBlank() || !itemSearch.getText().isEmpty();
+                if (hasSearch) {
+                    query.append("AND (itemID REGEXP ? OR itemDescription REGEXP ? OR s.supplierName REGEXP ?) ");
                 }
-                itemTable.setModel(DbUtils.resultSetToTableModel(dbCore.getResultSet(query)));
+
+                pst = dbConnect.con().prepareStatement(query.toString());
+
+                if (hasSearch) {
+                    String searchTerm = itemSearch.getText();
+                    pst.setString(1, searchTerm);
+                    pst.setString(2, searchTerm);
+                    pst.setString(3, searchTerm);
+                }
+
+                rs = pst.executeQuery();
+                itemTable.setModel(DbUtils.resultSetToTableModel(rs));
+
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    if (rs != null) {
+                        rs.close();
+                    }
+                    if (pst != null) {
+                        pst.close();
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         }
     }
 
     private void showProfiles() {
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+
         try {
-            String query = "SELECT * FROM showprofiles ";
-            if (!profileSearch.getText().isBlank() || !profileSearch.getText().isEmpty()) {
-                String searchProf = profileSearch.getText();
-                query += "WHERE `Group ID` REGEXP '" + searchProf + "' OR `Group Name` REGEXP '" + searchProf + "' "
-                        + "OR `Employee ID` REGEXP '" + searchProf + "' OR `Employee Name` REGEXP '" + searchProf + "' ";
+            StringBuilder query = new StringBuilder("SELECT * FROM showprofiles ");
+            boolean hasSearch = !profileSearch.getText().isBlank();
+
+            if (hasSearch) {
+                query.append("WHERE `Group ID` REGEXP ? OR `Group Name` REGEXP ? ")
+                        .append("OR `Employee ID` REGEXP ? OR `Employee Name` REGEXP ? ");
             }
-            query += "ORDER BY `Group Name` LIMIT " + initialProfCount + ", " + maxProfCount + " ";
-            profileTable.setModel(DbUtils.resultSetToTableModel(dbCore.getResultSet(query)));
+
+            query.append("ORDER BY `Group Name` LIMIT ?, ?");
+
+            pst = dbConnect.con().prepareStatement(query.toString());
+
+            int paramIndex = 1;
+
+            if (hasSearch) {
+                String searchTerm = profileSearch.getText();
+                pst.setString(paramIndex++, searchTerm);
+                pst.setString(paramIndex++, searchTerm);
+                pst.setString(paramIndex++, searchTerm);
+                pst.setString(paramIndex++, searchTerm);
+            }
+
+            pst.setInt(paramIndex++, initialProfCount);
+            pst.setInt(paramIndex, maxProfCount);
+
+            rs = pst.executeQuery();
+            profileTable.setModel(DbUtils.resultSetToTableModel(rs));
+
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
     private void showOperators() {
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+
         try {
-            String query = "SELECT ah.accountID AS `Account ID`, employeeID AS `Employee ID`, userName AS `Username` "
-                    + "FROM accountheader ah "
-                    + "JOIN accountdetail ad ON ah.accountID = ad.accountID "
-                    + "WHERE ah.deletedOn IS NULL ";
-            if (!operatorSearch.getText().isBlank() || !operatorSearch.getText().isEmpty()) {
-                query += "AND ah.accountID REGEXP '" + operatorSearch.getText() + "' OR employeeID REGEXP '" + operatorSearch.getText() + "' "
-                        + "OR userName REGEXP '" + operatorSearch.getText() + "' ";
+            StringBuilder query = new StringBuilder();
+            query.append("SELECT ah.accountID AS `Account ID`, employeeID AS `Employee ID`, userName AS `Username` ")
+                    .append("FROM accountheader ah ")
+                    .append("JOIN accountdetail ad ON ah.accountID = ad.accountID ")
+                    .append("WHERE ah.deletedOn IS NULL ");
+
+            boolean hasSearch = !operatorSearch.getText().isBlank();
+
+            if (hasSearch) {
+                query.append("AND (ah.accountID REGEXP ? OR employeeID REGEXP ? OR userName REGEXP ?) ");
             }
-            query += "ORDER BY ah.accountID LIMIT " + initialCount + ", " + maxCount + " ";
-            operatorTable.setModel(DbUtils.resultSetToTableModel(dbCore.getResultSet(query)));
+
+            query.append("ORDER BY ah.accountID LIMIT ?, ?");
+
+            pst = dbConnect.con().prepareStatement(query.toString());
+
+            int paramIndex = 1;
+
+            if (hasSearch) {
+                String searchTerm = operatorSearch.getText();
+                pst.setString(paramIndex++, searchTerm);
+                pst.setString(paramIndex++, searchTerm);
+                pst.setString(paramIndex++, searchTerm);
+            }
+
+            pst.setInt(paramIndex++, initialCount);
+            pst.setInt(paramIndex, maxCount);
+
+            rs = pst.executeQuery();
+            operatorTable.setModel(DbUtils.resultSetToTableModel(rs));
+
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
+
 }

@@ -1,19 +1,21 @@
 package forms;
 
 import classes.coreClass;
-import classes.databaseCore;
+import classes.dbConnect;
 import classes.logging;
 import java.sql.ResultSet;
 import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
+import java.sql.*;
 
 public class supplierForm extends javax.swing.JFrame {
 
     ResultSet rs;
+    PreparedStatement pst;
+    Connection con = new dbConnect().con();
     coreClass core = new coreClass();
     logging logs = new logging();
-    databaseCore dbCore = new databaseCore();
     private int initialNum = 0;
     private int maxNum = 10;
     private final int addedNum = 10;
@@ -291,21 +293,43 @@ public class supplierForm extends javax.swing.JFrame {
     private void showSuppliers(String suppName, int initial, int max) {
         try {
             logs.setupLogger();
-            String query = "SELECT supplierName AS `Supplier Name` "
-                    + "FROM itemsupplier ";
+
+            String query;
             if (suppName != null && (!suppName.isBlank() || !suppName.isEmpty())) {
-                query += "WHERE supplierName REGEXP '" + suppName + "' "
-                        + "AND deletedOn IS NULL "
-                        + "LIMIT " + initial + ", " + max + "";
+                query = "SELECT supplierName AS `Supplier Name` "
+                        + "FROM itemsupplier "
+                        + "WHERE supplierName REGEXP ? AND deletedOn IS NULL "
+                        + "LIMIT ?, ?";
+                pst = con.prepareStatement(query);
+                pst.setString(1, suppName);
+                pst.setInt(2, initial);
+                pst.setInt(3, max);
             } else {
-                query += "WHERE deletedOn IS NULL "
-                        + "LIMIT " + initial + ", " + max + "";
+                query = "SELECT supplierName AS `Supplier Name` "
+                        + "FROM itemsupplier "
+                        + "WHERE deletedOn IS NULL "
+                        + "LIMIT ?, ?";
+                pst = con.prepareStatement(query);
+                pst.setInt(1, initial);
+                pst.setInt(2, max);
             }
-            rs = dbCore.getResultSet(query);
+
+            rs = pst.executeQuery();
             suppTable.setModel(DbUtils.resultSetToTableModel(rs));
+
         } catch (Exception e) {
             logs.logger.log(Level.SEVERE, "An exception occurred", e);
         } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+            } catch (Exception ex) {
+                logs.logger.log(Level.WARNING, "Error closing resources", ex);
+            }
             logs.closeLogger();
         }
     }

@@ -1,17 +1,19 @@
 package forms;
 
 import classes.coreClass;
-import classes.databaseCore;
+import classes.dbConnect;
 import classes.logging;
 import java.util.logging.Level;
-import java.sql.ResultSet;
+import java.sql.*;
 import javax.swing.JOptionPane;
 
 public class addProfileForm extends javax.swing.JFrame {
 
-    databaseCore dbCore = new databaseCore();
     logging logs = new logging();
     coreClass core = new coreClass();
+    PreparedStatement pst;
+    ResultSet rs;
+    Connection con = new dbConnect().con();
 
     public addProfileForm() {
         initComponents();
@@ -262,11 +264,11 @@ public class addProfileForm extends javax.swing.JFrame {
             if (priceOverride.isSelected()) {
                 priceOverrideFlag = 1;
             }
-            
-            if(core.getAccountID().isEmpty() || core.getAccountID().isBlank()){
+
+            if (core.getAccountID().isEmpty() || core.getAccountID().isBlank()) {
                 JOptionPane.showMessageDialog(null, "Please login before adding a profile.", "Warning", 1);
-            }else{
-                core.insertProfileHeader(accountID, core.getAccountID(), group, discountOverrideFlag, abortReceiptFlag, voidReceiptFlag, totalDiscountFlag, 
+            } else {
+                core.insertProfileHeader(accountID, core.getAccountID(), group, discountOverrideFlag, abortReceiptFlag, voidReceiptFlag, totalDiscountFlag,
                         reprintReceiptFlag, lineVoidFlag, priceOverrideFlag);
             }
         }
@@ -342,10 +344,10 @@ public class addProfileForm extends javax.swing.JFrame {
 
     private void loadGroupNames() {
         try {
-            ResultSet rs;
             logs.setupLogger();
             String query = "SELECT description FROM profilegroup WHERE deletedOn IS NULL ORDER BY description";
-            rs = dbCore.getResultSet(query);
+            pst = con.prepareStatement(query);
+            rs = pst.executeQuery();
             groupName.removeAllItems();
             while (rs.next()) {
                 groupName.addItem(rs.getString("description"));
