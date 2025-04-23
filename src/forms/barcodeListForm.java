@@ -1,17 +1,23 @@
 package forms;
 
+import classes.coreClass;
 import classes.dbConnect;
 import classes.itemClass;
 import classes.logging;
 import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import java.sql.*;
+import net.proteanit.sql.DbUtils;
 
 public class barcodeListForm extends javax.swing.JFrame {
 
     public static String itemID;
     logging logs = new logging();
     itemClass item = new itemClass();
+    PreparedStatement pst;
+    ResultSet rs;
+    Connection con = new dbConnect().con();
+    coreClass core = new coreClass();
 
     public barcodeListForm() {
         initComponents();
@@ -23,14 +29,21 @@ public class barcodeListForm extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        barcodeTable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        barcodeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null},
                 {null},
@@ -41,7 +54,7 @@ public class barcodeListForm extends javax.swing.JFrame {
                 "Barcode"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(barcodeTable);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
         jLabel2.setText("Add Barcode");
@@ -104,11 +117,23 @@ public class barcodeListForm extends javax.swing.JFrame {
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         try {
+            logs.setupLogger();
             //check if barcode is added or it has the same itemid in item table
             if (item.isBarcodeUsed(itemID)) {
                 JOptionPane.showMessageDialog(null, "Barcode is used. Try another.");
-            }else{
+            } else {
                 String barcode = JOptionPane.showInputDialog(null, "Input barcode");
+                if (!barcode.isBlank() || !barcode.isEmpty()) {
+                    String query = "INSERT INTO itembarcode(itemID, barcode, addedOn, addedBy) "
+                            + "VALUES(?, ?, NOW(), ?)";
+                    pst = con.prepareStatement(query);
+                    pst.setString(1, itemID);
+                    pst.setString(2, barcode);
+                    pst.setString(3, core.getAccountID());
+                    pst.executeUpdate();
+                    pst.close();
+                    showBarcodes();
+                }
             }
         } catch (Exception e) {
             logs.logger.log(Level.SEVERE, "An exception occurred", e);
@@ -118,8 +143,34 @@ public class barcodeListForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        // TODO add your handling code here:
+        try {
+            logs.setupLogger();
+            int row = barcodeTable.getSelectedRow();
+            int col = 0;
+            String barcode = barcodeTable.getValueAt(row, col).toString();
+            int option = JOptionPane.showConfirmDialog(null, "Delete barcode?", null, 0);
+            if (option == 0) {
+                String query = "UPDATE itembarcode SET deletedOn = NOW(), addedBy = ? "
+                        + "WHERE itemID = ? AND barcode = ? AND deletedOn IS NULL";
+                pst = con.prepareStatement(query);
+                pst.setString(1, core.getAccountID());
+                pst.setString(2, itemID);
+                pst.setString(3, barcode);
+                pst.executeUpdate();
+                pst.close();
+            }
+        } catch (NullPointerException npe) {
+            JOptionPane.showMessageDialog(null, "Please select a barcode to delete.");
+        } catch (Exception e) {
+            logs.logger.log(Level.SEVERE, "An exception occurred", e);
+        } finally {
+            logs.closeLogger();
+        }
     }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        showBarcodes();
+    }//GEN-LAST:event_formWindowGainedFocus
 
     /**
      * @param args the command line arguments
@@ -158,10 +209,27 @@ public class barcodeListForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable barcodeTable;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
+    private void showBarcodes() {
+        try {
+            logs.setupLogger();
+            String query = "SELECT barcode AS 'Barcode' FROM itembarcode WHERE itemID = ? AND deletedOn IS NULL";
+            pst = con.prepareStatement(query);
+            pst.setString(1, itemID);
+            rs = pst.executeQuery();
+            barcodeTable.setModel(DbUtils.resultSetToTableModel(rs));
+            pst.close();
+            rs.close();
+        } catch (Exception e) {
+            logs.logger.log(Level.SEVERE, "An exception occurred", e);
+        } finally {
+            logs.closeLogger();
+        }
+    }
 }
