@@ -119,10 +119,10 @@ public class barcodeListForm extends javax.swing.JFrame {
         try {
             logs.setupLogger();
             //check if barcode is added or it has the same itemid in item table
-            if (item.isBarcodeUsed(itemID)) {
+            String barcode = JOptionPane.showInputDialog(null, "Input barcode");
+            if (item.isBarcodeUsed(barcode)) {
                 JOptionPane.showMessageDialog(null, "Barcode is used. Try another.");
             } else {
-                String barcode = JOptionPane.showInputDialog(null, "Input barcode");
                 if (!barcode.isBlank() || !barcode.isEmpty()) {
                     String query = "INSERT INTO itembarcode(itemID, barcode, addedOn, addedBy) "
                             + "VALUES(?, ?, NOW(), ?)";
@@ -150,7 +150,7 @@ public class barcodeListForm extends javax.swing.JFrame {
             String barcode = barcodeTable.getValueAt(row, col).toString();
             int option = JOptionPane.showConfirmDialog(null, "Delete barcode?", null, 0);
             if (option == 0) {
-                String query = "UPDATE itembarcode SET deletedOn = NOW(), addedBy = ? "
+                String query = "UPDATE itembarcode SET deletedOn = NOW(), deletedBy = ? "
                         + "WHERE itemID = ? AND barcode = ? AND deletedOn IS NULL";
                 pst = con.prepareStatement(query);
                 pst.setString(1, core.getAccountID());
@@ -160,6 +160,8 @@ public class barcodeListForm extends javax.swing.JFrame {
                 pst.close();
             }
         } catch (NullPointerException npe) {
+            JOptionPane.showMessageDialog(null, "Please select a barcode to delete.");
+        } catch (ArrayIndexOutOfBoundsException ai) {
             JOptionPane.showMessageDialog(null, "Please select a barcode to delete.");
         } catch (Exception e) {
             logs.logger.log(Level.SEVERE, "An exception occurred", e);

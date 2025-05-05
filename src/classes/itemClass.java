@@ -123,8 +123,32 @@ public class itemClass extends dbConnect {
             if (!accountID.isBlank() || !accountID.isEmpty()) {
                 String query = "UPDATE itemheader "
                         + "SET deletedOn = NOW(), deletedBy = ? "
-                        + "WHERE itemID = ? ";
+                        + "WHERE itemID = ? AND deletedOn IS NULL";
                 pst = con.prepareStatement(query);
+                pst.setString(1, accountID);
+                pst.setString(2, itemID);
+                pst.executeUpdate();
+
+                String detailQuery = "UPDATE itemdetail "
+                        + "SET deletedOn = NOW(), deletedBy = ? "
+                        + "WHERE itemID = ? AND deletedOn IS NULL";
+                pst = con.prepareStatement(detailQuery);
+                pst.setString(1, accountID);
+                pst.setString(2, itemID);
+                pst.executeUpdate();
+
+                String itemBarcodeQuery = "UPDATE itembarcode "
+                        + "SET deletedOn = NOW(), deletedBy = ? "
+                        + "WHERE itemID = ? AND deletedOn IS NULL";
+                pst = con.prepareStatement(itemBarcodeQuery);
+                pst.setString(1, accountID);
+                pst.setString(2, itemID);
+                pst.executeUpdate();
+                
+                String itemPriceQuery = "UPDATE itemprice "
+                        + "SET deletedOn = NOW(), deletedBy = ? "
+                        + "WHERE itemID = ? AND deletedOn IS NULL";
+                pst = con.prepareStatement(itemPriceQuery);
                 pst.setString(1, accountID);
                 pst.setString(2, itemID);
                 pst.executeUpdate();
@@ -155,12 +179,11 @@ public class itemClass extends dbConnect {
             pst1.executeUpdate();
 
             // UPDATE itemdetail
-            StringBuilder sb = new StringBuilder();
-            sb.append("UPDATE itemdetail SET description = ?, categoryID = ?, discountPWDAllowed = ?, "
+            String query2 = "UPDATE itemdetail SET description = ?, categoryID = ?, discountPWDAllowed = ?, "
                     + "discountSCAllowed = ?, updatedOn = NOW(), updatedBy = ?, isVatable = ?, "
-                    + "totalDiscountAllowed = ?, unitOfMeasure = ? WHERE itemID = ? AND deletedOn IS NULL");
+                    + "totalDiscountAllowed = ?, unitOfMeasure = ? WHERE itemID = ? AND deletedOn IS NULL";
 
-            PreparedStatement pst2 = con.prepareStatement(sb.toString());
+            PreparedStatement pst2 = con.prepareStatement(query2);
             pst2.setString(1, ItemDesc.toUpperCase());
             pst2.setInt(2, getCategoryID(itemCategory));
             pst2.setInt(3, allowPWD);
@@ -168,7 +191,6 @@ public class itemClass extends dbConnect {
             pst2.setString(5, core.getAccountID());
             pst2.setInt(6, isVatable);
             pst2.setInt(7, totalDisc);
-            System.out.println(getCategoryID(itemCategory));
             if (UOM != null) {
                 pst2.setString(8, UOM);
             } else {
@@ -261,7 +283,8 @@ public class itemClass extends dbConnect {
                     + "JOIN itemsupplier s ON s.Auto_ID = ih.supplierID "
                     + "LEFT JOIN itemprice ip ON ih.itemID = ip.itemID "
                     + "WHERE ih.deletedOn IS NULL "
-                    + "AND ih.itemID = ?";
+                    + "AND ih.itemID = ? "
+                    + "AND id.deletedOn IS NULL ";
             pst = con.prepareStatement(query);
             pst.setString(1, itemID);
             rs = pst.executeQuery();
@@ -288,7 +311,7 @@ public class itemClass extends dbConnect {
         }
     }
 
-    public boolean isBarcodeUsed(String itemID) {
+    public boolean isBarcodeUsed(String barcode) {
         boolean result = false;
         try {
             String query = "SELECT * "
@@ -296,7 +319,7 @@ public class itemClass extends dbConnect {
                     + "WHERE barcode = ? "
                     + "AND deletedOn IS NULL ";
             pst = con.prepareStatement(query);
-            pst.setString(1, itemID);
+            pst.setString(1, barcode);
             rs = pst.executeQuery();
             if (rs.next()) {
                 result = true;
